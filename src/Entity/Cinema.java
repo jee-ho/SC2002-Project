@@ -31,7 +31,7 @@ public class Cinema {
 	 */
 	public Cinema(String name, String nameCode, CinemaTypes cinemaType, int[][] seats) throws CinemaCodeNameException, InvalidCinemaSeatException{
 		this.name = name;
-		if(nameCode.length()<5){
+		if(nameCode.length()<10){
 			throw new CinemaCodeNameException();
 		} else {
 			this.nameCode = nameCode;
@@ -43,7 +43,6 @@ public class Cinema {
 			throw new InvalidCinemaSeatException();
 		}
 
-
 	}
 
 	/**
@@ -53,7 +52,7 @@ public class Cinema {
 	 */
 	public Cinema(String name, String nameCode, int[][] seats) throws CinemaCodeNameException, InvalidCinemaSeatException{
 		this.name = name;
-		if(nameCode.length()<5){
+		if(nameCode.length()<10){
 			throw new CinemaCodeNameException();
 		} else {
 			this.nameCode = nameCode;
@@ -97,7 +96,7 @@ public class Cinema {
 	 * @throws CinemaCodeNameException nameCode is checked to be 5 characters long.
 	 */
 	public void setNameCode(String nameCode) throws CinemaCodeNameException{
-		if(nameCode.length()<5){
+		if(nameCode.length()<10){
 			throw new CinemaCodeNameException();
 		} else {
 			this.nameCode = nameCode;
