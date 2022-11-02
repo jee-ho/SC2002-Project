@@ -1,6 +1,13 @@
 package Boundary;
 
+import Controller.CineplexController;
 import Controller.ScannerController;
+import Entity.*;
+import ExceptionPackage.CinemaCodeNameException;
+import ExceptionPackage.ExistingCineplexException;
+import ExceptionPackage.LessThan3CinemasException;
+
+import java.util.ArrayList;
 
 /**
  * This is the main class.
@@ -15,6 +22,32 @@ class MainApp {
 	 * @param args The arguments passed into main.
 	 */
 	public static void main(String[] args) {
+		CineplexController cineplexController= new CineplexController();
+		ArrayList<Cinema> tempCinList= new ArrayList<Cinema>();
+		SeatList tempSeat = new SeatList();
+		tempSeat.printLayout();
+		try {
+		tempCinList.add(new Cinema("scr1", "ORCHASCRN1", tempSeat));
+		tempCinList.add(new Cinema("scr2", "ORCHASCRN2", tempSeat));
+		tempCinList.add(new Cinema("scr3", "ORCHASCRN3", tempSeat));
+		cineplexController.createCineplex("Orchard Cineplex", tempCinList);
+		} catch (LessThan3CinemasException e) {
+			throw new RuntimeException(e);
+		} catch (ExistingCineplexException e) {
+			throw new RuntimeException(e);
+		} catch (CinemaCodeNameException e) {
+			throw new RuntimeException(e);
+		}
+
+		System.out.println(cineplexController.read().get(0).toString());
+		cineplexController.renameCineplex("Orchard Cineplex", "New Cineplex");
+		System.out.println(cineplexController.read().get(0).toString());
+
+
+		cineplexController.deleteCineplex("New Cineplex");
+
+
+
 		boolean isRunning = true;
 		while (isRunning) {
 			System.out.println("MOBLIMA MAIN MENU");

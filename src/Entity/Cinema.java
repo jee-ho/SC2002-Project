@@ -1,7 +1,8 @@
 package Entity;
 
 import ExceptionPackage.CinemaCodeNameException;
-import ExceptionPackage.InvalidCinemaSeatException;
+
+import java.io.Serializable;
 
 /**
  * This Cinema class contains data about itself. Different (non-normal) types of Cinema are extensions of this class.
@@ -9,16 +10,16 @@ import ExceptionPackage.InvalidCinemaSeatException;
  * @version 1.0
  * @since 2022-10-31
  */
-public class Cinema {
-	enum CinemaTypes {
+public class Cinema implements Serializable {
+	public enum CinemaTypes {
 		CIN_NORMAL,
 		CIN_3D,
 		CIN_PREMIUM,
 	}
-	String name;
-	String nameCode;
-	CinemaTypes cinemaType;
-	int[][] seats;
+	private String name;
+	private String nameCode;
+	private CinemaTypes cinemaType;
+	private SeatList seats;			//TODO move seats to be a field of ShowTime
 
 	/**
 	 * Constructor for a Cinema.
@@ -27,9 +28,8 @@ public class Cinema {
 	 * @param cinemaType Enum type of cinema.
 	 * @param seats The seats in the cinema.
 	 * @throws CinemaCodeNameException nameCode is checked to be 5 characters long.
-	 * @throws InvalidCinemaSeatException seats is checked to be at least 1 row and 1 column.
 	 */
-	public Cinema(String name, String nameCode, CinemaTypes cinemaType, int[][] seats) throws CinemaCodeNameException, InvalidCinemaSeatException{
+	public Cinema(String name, String nameCode, CinemaTypes cinemaType, SeatList seats) throws CinemaCodeNameException{
 		this.name = name;
 		if(nameCode.length()<10){
 			throw new CinemaCodeNameException();
@@ -39,18 +39,16 @@ public class Cinema {
 
 		this.cinemaType = cinemaType;
 
-		if(seats.length <1 || seats[0].length<1){
-			throw new InvalidCinemaSeatException();
-		}
+		this.seats = seats;
 
 	}
 
 	/**
-	 * Overloaded constructor similar to {@link Cinema#Cinema(String, String, CinemaTypes, int[][])}.
+	 * Overloaded constructor similar to {@link Cinema#Cinema(String, String, CinemaTypes, SeatList)}.
 	 * Omitting CinemaTypes parameter, the default value of cinemaType is set to CIN_NORMAL.
-	 * @see Cinema#Cinema(String, String, CinemaTypes, int[][])
+	 * @see Cinema#Cinema(String, String, CinemaTypes, SeatList)
 	 */
-	public Cinema(String name, String nameCode, int[][] seats) throws CinemaCodeNameException, InvalidCinemaSeatException{
+	public Cinema(String name, String nameCode, SeatList seats) throws CinemaCodeNameException{
 		this.name = name;
 		if(nameCode.length()<10){
 			throw new CinemaCodeNameException();
@@ -59,11 +57,8 @@ public class Cinema {
 		}
 		this.cinemaType = CinemaTypes.CIN_NORMAL;
 
-		if(seats.length <1 || seats[0].length<1){
-			throw new InvalidCinemaSeatException();
-		} else {
-			this.seats = seats;
-		}
+		this.seats = seats;
+
 	}
 
 	/**
@@ -123,20 +118,15 @@ public class Cinema {
 	 * Get the seats in the cinema.
 	 * @return Seats in the cinema.
 	 */
-	public int[][] getSeats() {
+	public SeatList getSeats() {
 		return seats;
 	}
 
 	/**
 	 * Set the seats in the cinema.
 	 * @param seats Seats in the cinema.
-	 * @throws InvalidCinemaSeatException seats is checked to be at least 1 row and 1 column.
 	 */
-	public void setSeats(int[][] seats) throws InvalidCinemaSeatException{
-		if(seats.length <1 || seats[0].length<1){
-			throw new InvalidCinemaSeatException();
-		} else {
-			this.seats = seats;
-		}
+	public void setSeats(SeatList seats){
+		this.seats = seats;
 	}
 }

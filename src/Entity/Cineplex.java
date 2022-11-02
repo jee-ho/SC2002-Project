@@ -12,26 +12,17 @@ import java.util.ArrayList;
  * @since 2022-10-31
  */
 public class Cineplex implements Serializable {
-	String name;
-	String address;
-	ArrayList<Cinema> cinemaList;
+	private String name;
+	private ArrayList<Cinema> cinemaList;
 
 	/**
 	 * Constructor for a Cineplex.
 	 * @param name The name of the cineplex
-	 * @param address The street address of the cineplex
 	 * @param cinemaList An ArrayList containing at least 3 Cinema objects.
-	 * @throws LessThan3CinemasException cinemaList is checked to have at least 3 Cinema objects.
 	 */
-	public Cineplex(String name, String address, ArrayList<Cinema> cinemaList) throws LessThan3CinemasException{
+	public Cineplex(String name, ArrayList<Cinema> cinemaList){
 		this.name = name;
-		this.address = address;
-
-		if(cinemaList.size()<3){
-			throw new LessThan3CinemasException();
-		} else {
-			this.cinemaList = cinemaList;
-		}
+		this.cinemaList = cinemaList;
 	}
 
 	/**
@@ -50,21 +41,6 @@ public class Cineplex implements Serializable {
 		this.name = name;
 	}
 
-	/**
-	 * Get the street address of the cineplex.
-	 * @return Street address of the cineplex.
-	 */
-	public String getAddress() {
-		return address;
-	}
-
-	/**
-	 * Set the street address of the cineplex.
-	 * @param address Street address of the cineplex.
-	 */
-	public void setAddress(String address) {
-		this.address = address;
-	}
 
 	/**
 	 * Get the list of cinemas in this cineplex.
@@ -93,12 +69,10 @@ public class Cineplex implements Serializable {
 	 */
 	public String toString(){
 		String outputString = "";
-		outputString += "Cineplex " + name +  "\n";
-		outputString += "Located at " + address + "\n";
-		outputString += "With cinemas: \n";
+		outputString += "Cineplex \"" + name +  "\"\n";
 		for(int i=0; i<cinemaList.size(); i++){
 			Cinema currentCinema = getCinemaList().get(i);
-			outputString += i + " (" + currentCinema.cinemaType + "): " + currentCinema.name + " with code " + currentCinema.nameCode + "\n";
+			outputString += i + " (" + currentCinema.getCinemaType() + "): \"" + currentCinema.getName() + "\", codename " + currentCinema.getNameCode() + "\n";
 		}
 		return outputString;
 	}
