@@ -1,7 +1,6 @@
 package Controller;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import Entity.*;
@@ -9,7 +8,7 @@ import ExceptionPackage.ExistingCineplexException;
 import ExceptionPackage.LessThan3CinemasException;
 
 public class CineplexController {
-	public final static String FILENAME = "database.txt";
+	public final static String FILENAME = "cineplexes.txt";
 
 	public void createCineplex(String name, ArrayList<Cinema> cinemaList) throws LessThan3CinemasException, ExistingCineplexException {
 		File data = new File(FILENAME);
@@ -58,9 +57,8 @@ public class CineplexController {
 		ArrayList<Cineplex> cineplexes = read();
 		ArrayList<Cineplex> returnList = new ArrayList<Cineplex>();
 
-		for(int i=0; i<cineplexes.size(); i++){
-			Cineplex cin = cineplexes.get(i);
-			if(cin.getName().equals(oldName)){
+		for (Cineplex cin : cineplexes) {
+			if (cin.getName().equals(oldName)) {
 				cin.setName(newName);
 			}
 			returnList.add(cin);
@@ -71,9 +69,8 @@ public class CineplexController {
 		ArrayList<Cineplex> cineplexes = read();
 		ArrayList<Cineplex> returnList = new ArrayList<Cineplex>();
 
-		for(int i=0; i<cineplexes.size(); i++){
-			Cineplex cin = cineplexes.get(i);
-			if(!cin.getName().equals(name)){
+		for (Cineplex cin : cineplexes) {
+			if (!cin.getName().equals(name)) {
 				returnList.add(cin);
 			}
 		}
@@ -94,5 +91,18 @@ public class CineplexController {
 		} catch (IOException e){
 			System.out.println("caught in cineplexcontroller");
 		}
+	}
+
+	public Cinema getCinemaByCodeName(String searchName){
+		ArrayList<Cineplex> cineplexes = read();
+
+		for (Cineplex cinep : cineplexes) {
+			for(Cinema cinem : cinep.getCinemaList()){
+				if(cinem.getNameCode().equals(searchName)){
+					return cinem;
+				}
+			}
+		}
+		return null;
 	}
 }

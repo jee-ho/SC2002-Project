@@ -1,12 +1,9 @@
 package Boundary;
 
-import Controller.CineplexController;
-import Controller.ScannerController;
+import Controller.*;
 import Entity.*;
-import ExceptionPackage.CinemaCodeNameException;
-import ExceptionPackage.ExistingCineplexException;
-import ExceptionPackage.LessThan3CinemasException;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 /**
@@ -22,29 +19,57 @@ class MainApp {
 	 * @param args The arguments passed into main.
 	 */
 	public static void main(String[] args) {
-		CineplexController cineplexController= new CineplexController();
+		CineplexController cineplexController = new CineplexController();
+		SeatListController seatListController = new SeatListController();
+		MovieController movieController = new MovieController();
+		ShowTimeController showTimeController = new ShowTimeController();
+
 		ArrayList<Cinema> tempCinList= new ArrayList<Cinema>();
-		SeatList tempSeat = new SeatList();
-		tempSeat.printLayout();
-		try {
-		tempCinList.add(new Cinema("scr1", "ORCHASCRN1", tempSeat));
-		tempCinList.add(new Cinema("scr2", "ORCHASCRN2", tempSeat));
-		tempCinList.add(new Cinema("scr3", "ORCHASCRN3", tempSeat));
-		cineplexController.createCineplex("Orchard Cineplex", tempCinList);
-		} catch (LessThan3CinemasException e) {
-			throw new RuntimeException(e);
-		} catch (ExistingCineplexException e) {
-			throw new RuntimeException(e);
-		} catch (CinemaCodeNameException e) {
-			throw new RuntimeException(e);
+		try{
+			tempCinList.add(new Cinema("scr1", "ORCHASCRN1"));
+			tempCinList.add(new Cinema("scr2", "ORCHASCRN2"));
+			tempCinList.add(new Cinema("scr3", "ORCHASCRN3"));
+			cineplexController.createCineplex("Orchard Cineplex", tempCinList);
+
+
+			System.out.println(cineplexController.read().get(0).toString());
+
+
+			movieController.addMovie("Jaws", Movie.ShowStatus.NOWSHOWING, "Shark eats man", "Steven Spielberg",
+					new String[]{"Roy Scheider", "Robert Shaw", "Richard Dreyluss"}, Movie.MovieType.TYPE_REGULAR, 124, Movie.MovieRating.PG);
+
+			movieController.addMovie("Jaws 2", Movie.ShowStatus.NOWSHOWING, "Shark eats man", "Steven Spielberg",
+					new String[]{"Roy Scheider", "Robert Shaw", "Richard Dreyluss"}, Movie.MovieType.TYPE_REGULAR, 124, Movie.MovieRating.PG13);
+
+			movieController.addReview("Jaws", "TCL","good",4);
+			movieController.addReview("Jaws", "KEK","bad",2);
+
+			System.out.println(movieController.read().get(0).toString());
+
+
+			showTimeController.createShowtime("Jaws", LocalDateTime.parse("2022-12-03T10:15:30"), "ORCHASCRN1");
+			System.out.println(showTimeController.read().get(0).toString());
+
+
+			ShowTime tempsho = showTimeController.getShowTime("Jaws", LocalDateTime.parse("2022-12-03T10:15:30"), "ORCHASCRN1");
+
+			tempsho.setShowSeatPlan(seatListController.bookSeat(tempsho.getShowSeatPlan(),'A',12));
+			seatListController.printLayout(tempsho.getShowSeatPlan());
+
+			movieController.getMovieCatalog();
+			movieController.getMovieByNo(1);
+
+			showTimeController.getAllShowTimesForMovie("Jaws");
+
+			showTimeController.deleteShowtime("Jaws", LocalDateTime.parse("2022-12-03T10:15:30"));
+
+			movieController.deleteMovie("Jaws");
+			movieController.deleteMovie("Jaws 2");
+
+			cineplexController.deleteCineplex("Orchard Cineplex");
+		} catch (Exception e){
+			System.out.println(e.getMessage());
 		}
-
-		System.out.println(cineplexController.read().get(0).toString());
-		cineplexController.renameCineplex("Orchard Cineplex", "New Cineplex");
-		System.out.println(cineplexController.read().get(0).toString());
-
-
-		cineplexController.deleteCineplex("New Cineplex");
 
 
 

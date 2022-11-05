@@ -19,36 +19,31 @@ public class Cinema implements Serializable {
 	private String name;
 	private String nameCode;
 	private CinemaTypes cinemaType;
-	private SeatList seats;			//TODO move seats to be a field of ShowTime
 
 	/**
 	 * Constructor for a Cinema.
 	 * @param name Name of the cinema.
 	 * @param nameCode Codename of the cinema.
 	 * @param cinemaType Enum type of cinema.
-	 * @param seats The seats in the cinema.
 	 * @throws CinemaCodeNameException nameCode is checked to be 5 characters long.
 	 */
-	public Cinema(String name, String nameCode, CinemaTypes cinemaType, SeatList seats) throws CinemaCodeNameException{
+	public Cinema(String name, String nameCode, CinemaTypes cinemaType) throws CinemaCodeNameException{
 		this.name = name;
 		if(nameCode.length()<10){
 			throw new CinemaCodeNameException();
 		} else {
 			this.nameCode = nameCode;
 		}
-
 		this.cinemaType = cinemaType;
-
-		this.seats = seats;
 
 	}
 
 	/**
-	 * Overloaded constructor similar to {@link Cinema#Cinema(String, String, CinemaTypes, SeatList)}.
+	 * Overloaded constructor similar to {@link Cinema#Cinema(String, String, CinemaTypes)}.
 	 * Omitting CinemaTypes parameter, the default value of cinemaType is set to CIN_NORMAL.
-	 * @see Cinema#Cinema(String, String, CinemaTypes, SeatList)
+	 * @see Cinema#Cinema(String, String, CinemaTypes)
 	 */
-	public Cinema(String name, String nameCode, SeatList seats) throws CinemaCodeNameException{
+	public Cinema(String name, String nameCode) throws CinemaCodeNameException{
 		this.name = name;
 		if(nameCode.length()<10){
 			throw new CinemaCodeNameException();
@@ -56,8 +51,6 @@ public class Cinema implements Serializable {
 			this.nameCode = nameCode;
 		}
 		this.cinemaType = CinemaTypes.CIN_NORMAL;
-
-		this.seats = seats;
 
 	}
 
@@ -114,19 +107,4 @@ public class Cinema implements Serializable {
 		this.cinemaType = cinemaType;
 	}
 
-	/**
-	 * Get the seats in the cinema.
-	 * @return Seats in the cinema.
-	 */
-	public SeatList getSeats() {
-		return seats;
-	}
-
-	/**
-	 * Set the seats in the cinema.
-	 * @param seats Seats in the cinema.
-	 */
-	public void setSeats(SeatList seats){
-		this.seats = seats;
-	}
 }

@@ -35,36 +35,11 @@ public class SeatList implements Serializable {
 		}
 	}
 
+	public Seat[][] getSeatingPlan() {
+		return seatingPlan;
+	}
 
-	public void printLayout(){
-		for(int row = 9; row>= 0; row--){
-			for(int col = 0; col<= 18; col++){
-				if(col==9)
-					System.out.print("  ");			//Make a space for the middle aisle
-				if(row == 0){
-					if(col<10 && col!=0){
-						System.out.print(" ");		//Align single-digit cols preceded by space to match double-digit
-					}
-					System.out.print(col + " ");	//Print col number with a space after
-				}
-				if(col == 0&&row!=0){
-					System.out.print(row + " ");	//Print row number with a space after
-				}
-				if(row>0 && col>0){
-					if(seatingPlan[row-1][col-1].isExists() && seatingPlan[row-1][col-1].isCoupleSeat()){
-						System.out.print(" C ");	//Mark couple seats
-					} else if(seatingPlan[row-1][col-1].isExists()){
-						System.out.print(" O ");	//Mark existing seats
-					} else if(!seatingPlan[row-1][col-1].isExists()){
-						System.out.print("   ");	//Show empty space for non-existent seats
-					}
-					//TODO: Marking of occupied seats and occupied couple seats
-
-				}
-			}
-			System.out.println();	//Newline every row
-		}
-
-
+	public void setSeatingPlan(Seat[][] seatingPlan) {
+		this.seatingPlan = seatingPlan;
 	}
 }
