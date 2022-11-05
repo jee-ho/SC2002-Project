@@ -2,6 +2,7 @@ package Controller;
 
 import Entity.Cinema;
 import Entity.Movie;
+import Entity.SeatList;
 import Entity.ShowTime;
 import ExceptionPackage.ExistingShowtimeException;
 import ExceptionPackage.NoSuchCinemaException;
@@ -107,5 +108,28 @@ public class ShowTimeController {
 			}
 			i++;
 		}
+	}
+
+	public void getSeatingForShowtime(int i){
+		ArrayList<ShowTime> showTimes = read();
+		ShowTime sho = showTimes.get(i);
+		SeatListController seatListController = new SeatListController();
+		System.out.println("Seating plan for " + sho.getShowTime().toLocalDate() +" " +sho.getShowTime().toLocalTime()+ " at " + sho.getCinema().getNameCode());
+		seatListController.printLayout(sho.getShowSeatPlan());
+	}
+
+	public void updateSeatList(ShowTime showtime, SeatList seatList){
+		ArrayList<ShowTime> showTimes = read();
+		ArrayList<ShowTime> returnList = new ArrayList<ShowTime>();
+
+		for (ShowTime sho : showTimes) {
+			if (sho.getMovie() == showtime.getMovie() && sho.getShowTime() == showtime.getShowTime() && sho.getCinema().getNameCode().equals(showtime.getCinema().getNameCode()) ){
+				sho.setShowSeatPlan(seatList);
+				returnList.add(sho);
+			} else {
+				returnList.add(sho);
+			}
+		}
+		overwriteShowtimeList(FILENAME, returnList);
 	}
 }

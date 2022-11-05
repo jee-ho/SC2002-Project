@@ -78,7 +78,6 @@ public class MovieController {
 	}
 	
 	public void addReview(String movieName, String author, String reviewText, int reviewScore){
-		Movie tempMovie;
 		File data = new File(FILENAME);
 		ArrayList<Movie> movies;
 		if(data.exists()){
@@ -86,7 +85,6 @@ public class MovieController {
 			if(movies.size()!=0){
 				for (Movie movie : movies) {
 					if (movie.getTitle().equals(movieName)) {
-						tempMovie = movie;
 						Review tempReview = new Review(author, reviewText, reviewScore);
 						ArrayList<Review> reviews;
 						reviews = movie.getReviews();
@@ -99,6 +97,23 @@ public class MovieController {
 
 		}
 
+	}
+
+	public void changeMovieStatus(String searchName, Movie.ShowStatus status) {
+		File data = new File(FILENAME);
+		ArrayList<Movie> movies;
+		if(data.exists()){
+			movies = read();
+			if(movies.size()!=0){
+				for (Movie movie : movies) {
+					if (movie.getTitle().equals(searchName)) {
+						movie.setStatus(status);
+						overwriteMovieList(FILENAME, movies);
+					}
+				}
+			}
+
+		}
 	}
 
 	public Movie getMovieByName(String searchName){
@@ -115,15 +130,22 @@ public class MovieController {
 		ArrayList<Movie> tempMovieList = read();
 		int i = 1;
 		for(Movie mov : tempMovieList){
-			System.out.println(i + ": " + mov.getTitle() + " (" +mov.getRating() + ")");
+			if(mov.getStatus() != Movie.ShowStatus.ENDOFSHOWING){
+				System.out.println(i + ": " + mov.getTitle() + " (" +mov.getRating() + ")");
+			}
 			i++;
 		}
 	}
 
 
-	public void getMovieByNo(int i) {
+	public void getMovieDetailsByNo(int i) {
 		ArrayList<Movie> tempMovieList = read();
 		Movie mov = tempMovieList.get(i);
 		System.out.println(mov.toString());
+	}
+
+	public Movie getMovieByNo(int i){
+		ArrayList<Movie> tempMovieList = read();
+		return tempMovieList.get(i);
 	}
 }

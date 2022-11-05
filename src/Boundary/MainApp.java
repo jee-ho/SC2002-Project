@@ -48,25 +48,30 @@ class MainApp {
 
 
 			showTimeController.createShowtime("Jaws", LocalDateTime.parse("2022-12-03T10:15:30"), "ORCHASCRN1");
+			showTimeController.createShowtime("Jaws 2", LocalDateTime.parse("2022-12-03T19:15:30"), "ORCHASCRN1");
+
 			System.out.println(showTimeController.read().get(0).toString());
 
-
+			//TODO: Bug with data inconsistency between stored showtimes and outputted showtimes. ENDOFSHOWING and booked seats not updated
 			ShowTime tempsho = showTimeController.getShowTime("Jaws", LocalDateTime.parse("2022-12-03T10:15:30"), "ORCHASCRN1");
+			showTimeController.updateSeatList(tempsho, seatListController.bookSeat(tempsho.getShowSeatPlan(),'A',12));
 
-			tempsho.setShowSeatPlan(seatListController.bookSeat(tempsho.getShowSeatPlan(),'A',12));
+			ShowTime tempsho2 = showTimeController.getShowTime("Jaws 2", LocalDateTime.parse("2022-12-03T19:15:30"), "ORCHASCRN1");
+			showTimeController.updateSeatList(tempsho2, seatListController.bookSeat(tempsho2.getShowSeatPlan(),'B',2));
+
+			movieController.changeMovieStatus("Jaws", Movie.ShowStatus.ENDOFSHOWING);
+
+
 			seatListController.printLayout(tempsho.getShowSeatPlan());
+			seatListController.printLayout(tempsho2.getShowSeatPlan());
+			showTimeController.getSeatingForShowtime(0);
+			showTimeController.getSeatingForShowtime(1);
 
 			movieController.getMovieCatalog();
-			movieController.getMovieByNo(1);
 
 			showTimeController.getAllShowTimesForMovie("Jaws");
 
-			showTimeController.deleteShowtime("Jaws", LocalDateTime.parse("2022-12-03T10:15:30"));
-
-			movieController.deleteMovie("Jaws");
-			movieController.deleteMovie("Jaws 2");
-
-			cineplexController.deleteCineplex("Orchard Cineplex");
+			System.out.println("End of init");
 		} catch (Exception e){
 			System.out.println(e.getMessage());
 		}
@@ -86,6 +91,13 @@ class MainApp {
 				case 1 -> MovieGoerMenu();
 				case 2 -> StaffMenu();
 				case 3 -> {
+					showTimeController.deleteShowtime("Jaws", LocalDateTime.parse("2022-12-03T10:15:30"));
+					showTimeController.deleteShowtime("Jaws 2", LocalDateTime.parse("2022-12-03T19:15:30"));
+
+					movieController.deleteMovie("Jaws");
+					movieController.deleteMovie("Jaws 2");
+
+					cineplexController.deleteCineplex("Orchard Cineplex");
 					isRunning = false;
 					System.out.println("Exiting...");
 				}
@@ -99,26 +111,29 @@ class MainApp {
 	 * The user menu for Movie Goer login. Shows user menu for Movie Goer actions.
 	 */
 	public static void MovieGoerMenu() {
+		//TODO: PREVIEW movie status: can list details (option 1) and showtime/seats (2) but cannot book (3).
+		//TODO: admin needs USERNAME and pw, store in file.
 
 		boolean isRunning = true;
 		while (isRunning) {
 			System.out.println("MOBLIMA MOVIE GOER MENU");
 			System.out.println("""
 					Available actions:
-					1. Search/List movie
-					2. View movie details
-					3. Check seat availability and selection
-					4. Book and purchase ticket
-					5. View booking history
-					6. List top 5 movies by sales or ratings
-					7. Exit to main menu
+					1. List movies & view movie details
+					2. Check showtimes and seat availability
+					3. Book and purchase ticket
+					4. View booking history
+					5. List top 5 movies by sales or ratings
+					6. Exit to main menu
 					Enter your selection:\040""");
 			switch (ScannerController.getInputInt()) {
 				case 1:
-					//TODO
+					ListMovieApp lma = new ListMovieApp();
+					lma.main();
 					break;
 				case 2:
-					//TODO
+					CheckSeatsApp csa = new CheckSeatsApp();
+					csa.main();
 					break;
 				case 3:
 					//TODO
@@ -130,9 +145,6 @@ class MainApp {
 					//TODO
 					break;
 				case 6:
-					//TODO
-					break;
-				case 7:
 					isRunning = false;
 					System.out.println("Exiting Movie Goer...");
 					break;

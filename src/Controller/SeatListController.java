@@ -106,4 +106,5 @@ public class SeatListController {
 		returnedList.setSeatingPlan(tempSeatArray);
 		return returnedList;
 	}
+
 }
