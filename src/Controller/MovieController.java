@@ -2,6 +2,7 @@ package Controller;
 
 import Entity.Movie;
 import Entity.Review;
+import Entity.ShowTime;
 import ExceptionPackage.ExistingMovieException;
 
 import java.io.*;
@@ -108,12 +109,20 @@ public class MovieController {
 				for (Movie movie : movies) {
 					if (movie.getTitle().equals(searchName)) {
 						movie.setStatus(status);
+
+						ShowTimeController stc = new ShowTimeController();
+						stc.updateMovieStatus(movie);
+
 						overwriteMovieList(FILENAME, movies);
 					}
 				}
 			}
-
 		}
+
+
+
+
+
 	}
 
 	public Movie getMovieByName(String searchName){
@@ -136,6 +145,8 @@ public class MovieController {
 			i++;
 		}
 	}
+
+
 
 
 	public void getMovieDetailsByNo(int i) {

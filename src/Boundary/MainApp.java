@@ -26,6 +26,7 @@ class MainApp {
 
 		ArrayList<Cinema> tempCinList= new ArrayList<Cinema>();
 		try{
+
 			tempCinList.add(new Cinema("scr1", "ORCHASCRN1"));
 			tempCinList.add(new Cinema("scr2", "ORCHASCRN2"));
 			tempCinList.add(new Cinema("scr3", "ORCHASCRN3"));
@@ -38,7 +39,7 @@ class MainApp {
 			movieController.addMovie("Jaws", Movie.ShowStatus.NOWSHOWING, "Shark eats man", "Steven Spielberg",
 					new String[]{"Roy Scheider", "Robert Shaw", "Richard Dreyluss"}, Movie.MovieType.TYPE_REGULAR, 124, Movie.MovieRating.PG);
 
-			movieController.addMovie("Jaws 2", Movie.ShowStatus.NOWSHOWING, "Shark eats man", "Steven Spielberg",
+			movieController.addMovie("Jaws 2", Movie.ShowStatus.PREVIEW, "Shark eats man", "Steven Spielberg",
 					new String[]{"Roy Scheider", "Robert Shaw", "Richard Dreyluss"}, Movie.MovieType.TYPE_REGULAR, 124, Movie.MovieRating.PG13);
 
 			movieController.addReview("Jaws", "TCL","good",4);
@@ -52,24 +53,26 @@ class MainApp {
 
 			System.out.println(showTimeController.read().get(0).toString());
 
-			//TODO: Bug with data inconsistency between stored showtimes and outputted showtimes. ENDOFSHOWING and booked seats not updated
-			ShowTime tempsho = showTimeController.getShowTime("Jaws", LocalDateTime.parse("2022-12-03T10:15:30"), "ORCHASCRN1");
-			showTimeController.updateSeatList(tempsho, seatListController.bookSeat(tempsho.getShowSeatPlan(),'A',12));
+			//ShowTime tempsho = showTimeController.getShowTime("Jaws", LocalDateTime.parse("2022-12-03T10:15:30"), "ORCHASCRN1");
+			//showTimeController.updateSeatList(tempsho, seatListController.bookSeat(tempsho.getShowSeatPlan(),'A',12));
 
-			ShowTime tempsho2 = showTimeController.getShowTime("Jaws 2", LocalDateTime.parse("2022-12-03T19:15:30"), "ORCHASCRN1");
-			showTimeController.updateSeatList(tempsho2, seatListController.bookSeat(tempsho2.getShowSeatPlan(),'B',2));
+			//ShowTime tempsho2 = showTimeController.getShowTime("Jaws 2", LocalDateTime.parse("2022-12-03T19:15:30"), "ORCHASCRN1");
+			//showTimeController.updateSeatList(tempsho2, seatListController.bookSeat(tempsho2.getShowSeatPlan(),'B',2));
+			showTimeController.updateSeatStatus(showTimeController.read().get(1), showTimeController.read().get(1).getShowSeatPlan().bookSeat('B', 2));
 
 			movieController.changeMovieStatus("Jaws", Movie.ShowStatus.ENDOFSHOWING);
 
 
-			seatListController.printLayout(tempsho.getShowSeatPlan());
-			seatListController.printLayout(tempsho2.getShowSeatPlan());
-			showTimeController.getSeatingForShowtime(0);
+			//seatListController.printLayout(tempsho.getShowSeatPlan());
+			//seatListController.printLayout(tempsho2.getShowSeatPlan());
 			showTimeController.getSeatingForShowtime(1);
+			//showTimeController.getSeatingForShowtime(1);
 
 			movieController.getMovieCatalog();
 
 			showTimeController.getAllShowTimesForMovie("Jaws");
+
+			System.out.println(showTimeController.getShowTime("Jaws", LocalDateTime.parse("2022-12-03T10:15:30"), "ORCHASCRN1").getMovie().toString());
 
 			System.out.println("End of init");
 		} catch (Exception e){
@@ -111,7 +114,6 @@ class MainApp {
 	 * The user menu for Movie Goer login. Shows user menu for Movie Goer actions.
 	 */
 	public static void MovieGoerMenu() {
-		//TODO: PREVIEW movie status: can list details (option 1) and showtime/seats (2) but cannot book (3).
 		//TODO: admin needs USERNAME and pw, store in file.
 
 		boolean isRunning = true;
@@ -136,7 +138,8 @@ class MainApp {
 					csa.main();
 					break;
 				case 3:
-					//TODO
+					BookSeatsApp bsa = new BookSeatsApp();
+					bsa.main();
 					break;
 				case 4:
 					//TODO
@@ -193,7 +196,7 @@ class MainApp {
 						Available actions:
 						1. Create/Update/Remove movie listing
 						2. Create/Update/Remove show times and movies
-						3. Configure system settings (edit admin password)
+						3. Configure system settings (edit public holidays or admin password)
 						4. Exit
 						Enter your selection:\040""");
 				switch (ScannerController.getInputInt()) {

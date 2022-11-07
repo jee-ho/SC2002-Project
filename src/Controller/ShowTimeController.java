@@ -22,7 +22,7 @@ public class ShowTimeController {
 			showtimes = read();
 			if(showtimes.size()!=0){
 				for (ShowTime showtime : showtimes) {
-					if (showtime.getMovie().getTitle().equals(movieName) && showtime.getShowTime().equals(time) && showtime.getCinema().getNameCode().equals(cinemaName)) {
+					if (showtime.getMovie().getTitle().equals(movieName) && showtime.getShowTime().isEqual(time) && showtime.getCinema().getNameCode().equals(cinemaName)) {
 						throw new ExistingShowtimeException();
 					}
 				}
@@ -66,7 +66,7 @@ public class ShowTimeController {
 		ArrayList<ShowTime> returnList = new ArrayList<ShowTime>();
 
 		for (ShowTime sho : showTimes) {
-			if (!(sho.getMovie().getTitle().equals(movieName) && sho.getShowTime().equals(time))) {
+			if (!(sho.getMovie().getTitle().equals(movieName) && sho.getShowTime().isEqual(time))) {
 				returnList.add(sho);
 			}
 		}
@@ -92,14 +92,14 @@ public class ShowTimeController {
 	public ShowTime getShowTime(String movieName, LocalDateTime time, String cinemaName){
 		ArrayList<ShowTime> showTimes = read();
 		for (ShowTime sho : showTimes) {
-			if (sho.getMovie().getTitle().equals(movieName) && sho.getShowTime().equals(time) && sho.getCinema().getNameCode().equals(cinemaName)) {
+			if (sho.getMovie().getTitle().equals(movieName) && sho.getShowTime().isEqual(time) && sho.getCinema().getNameCode().equals(cinemaName)) {
 				return sho;
 			}
 		}
 		return null;
 	}
 
-	public void getAllShowTimesForMovie(String movieName){
+	public ArrayList<ShowTime> getAllShowTimesForMovie(String movieName){
 		ArrayList<ShowTime> showTimes = read();
 		int i = 1;
 		for(ShowTime sho : showTimes) {
@@ -108,6 +108,7 @@ public class ShowTimeController {
 			}
 			i++;
 		}
+		return showTimes;
 	}
 
 	public void getSeatingForShowtime(int i){
@@ -120,16 +121,47 @@ public class ShowTimeController {
 
 	public void updateSeatList(ShowTime showtime, SeatList seatList){
 		ArrayList<ShowTime> showTimes = read();
-		ArrayList<ShowTime> returnList = new ArrayList<ShowTime>();
 
 		for (ShowTime sho : showTimes) {
-			if (sho.getMovie() == showtime.getMovie() && sho.getShowTime() == showtime.getShowTime() && sho.getCinema().getNameCode().equals(showtime.getCinema().getNameCode()) ){
+			if (sho.getMovie().getTitle().equals(showtime.getMovie().getTitle()) && sho.getShowTime().isEqual(showtime.getShowTime()) && sho.getCinema().getNameCode().equals(showtime.getCinema().getNameCode()) ){
 				sho.setShowSeatPlan(seatList);
-				returnList.add(sho);
-			} else {
-				returnList.add(sho);
 			}
 		}
-		overwriteShowtimeList(FILENAME, returnList);
+		overwriteShowtimeList(FILENAME, showTimes);
 	}
+
+	public void updateMovieStatus(Movie movie){
+		File data2 = new File(FILENAME);
+		ArrayList<ShowTime> showtimes;
+		if(data2.exists()){
+			showtimes = read();
+			if(showtimes.size()!=0){
+				for (ShowTime sho : showtimes) {
+					if (sho.getMovie().getTitle().equals(movie.getTitle())) {
+						sho.setMovie(movie);
+						overwriteShowtimeList(FILENAME, showtimes);
+					}
+				}
+			}
+
+		}
+	}
+	public void updateSeatStatus(ShowTime show, SeatList seats){
+		File data2 = new File(FILENAME);
+		ArrayList<ShowTime> showtimes;
+		if(data2.exists()){
+			showtimes = read();
+			if(showtimes.size()!=0){
+				for (ShowTime sho : showtimes) {
+					if (sho.getMovie().getTitle().equals(show.getMovie().getTitle()) && sho.getShowTime().isEqual(show.getShowTime()) && sho.getCinema().getNameCode().equals(show.getCinema().getNameCode())) {
+						sho.setShowSeatPlan(seats);
+						overwriteShowtimeList(FILENAME, showtimes);
+					}
+				}
+			}
+
+		}
+	}
+
+
 }

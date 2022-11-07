@@ -47,6 +47,7 @@ public class ScannerController {
 		return input;
 	}
 
+
 	/**
 	 * Closes the scanner.
 	 */
