@@ -29,24 +29,45 @@ public class Movie implements Serializable {
 	}
 
 	public enum ShowStatus{
-		PREVIEW,
-		NOWSHOWING,
-		COMINGSOON,
-		ENDOFSHOWING
+		PREVIEW("preview"),
+		NOWSHOWING("nowshowing"),
+		COMINGSOON("comingsoon"),
+		ENDOFSHOWING("endofshowing");
+		private final String text;
+		ShowStatus(final String text){
+			this.text = text;
+		}
+		public String toString(){
+			return text;
+		}
 	}
 
 	public enum MovieType{
-		TYPE_REGULAR,
-		TYPE_3D
+		TYPE_REGULAR("regular"),
+		TYPE_3D("3D");
+		private final String text;
+		MovieType(final String text){
+			this.text = text;
+		}
+		public String toString(){
+			return text;
+		}
 	}
 
 	public enum MovieRating{
-		G,
-		PG,
-		PG13,
-		NC16,
-		M18,
-		R21
+		G("G"),
+		PG("PG"),
+		PG13("PG13"),
+		NC16("NC16"),
+		M18("M18"),
+		R21("R21");
+		private final String text;
+		MovieRating(final String text){
+			this.text = text;
+		}
+		public String toString(){
+			return text;
+		}
 	}
 
 	public String getTitle() {

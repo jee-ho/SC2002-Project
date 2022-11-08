@@ -61,12 +61,12 @@ public class ShowTimeController {
 		}
 
 	}
-	public void deleteShowtime(String movieName, LocalDateTime time){
+	public void deleteShowtime(String movieName, LocalDateTime time, String cinemaName){
 		ArrayList<ShowTime> showTimes = read();
 		ArrayList<ShowTime> returnList = new ArrayList<ShowTime>();
 
 		for (ShowTime sho : showTimes) {
-			if (!(sho.getMovie().getTitle().equals(movieName) && sho.getShowTime().isEqual(time))) {
+			if (!(sho.getMovie().getTitle().equals(movieName) && sho.getShowTime().isEqual(time) && sho.getCinema().getNameCode().equals(cinemaName))) {
 				returnList.add(sho);
 			}
 		}
@@ -97,6 +97,11 @@ public class ShowTimeController {
 			}
 		}
 		return null;
+	}
+
+	public ShowTime getShowTimeByNo(int i){
+		ArrayList<ShowTime> showTimes = read();
+		return showTimes.get(i);
 	}
 
 	public ArrayList<ShowTime> getAllShowTimesForMovie(String movieName){

@@ -2,6 +2,7 @@ package Boundary;
 
 import Controller.*;
 import Entity.*;
+import ExceptionPackage.ExistingUserException;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ class MainApp {
 		SeatListController seatListController = new SeatListController();
 		MovieController movieController = new MovieController();
 		ShowTimeController showTimeController = new ShowTimeController();
+		UserController userController = new UserController();
 
 		ArrayList<Cinema> tempCinList= new ArrayList<Cinema>();
 		try{
@@ -74,6 +76,16 @@ class MainApp {
 
 			System.out.println(showTimeController.getShowTime("Jaws", LocalDateTime.parse("2022-12-03T10:15:30"), "ORCHASCRN1").getMovie().toString());
 
+
+			try {
+				userController.addStaff("admin", "admin");
+				userController.addMovieGoer("watcher", "password", "Tan CL", 91234567, "a@b.com");
+			} catch (ExistingUserException e) {
+				System.out.println(e.getMessage());
+			}
+
+			System.out.println(userController.read().get(0));
+
 			System.out.println("End of init");
 		} catch (Exception e){
 			System.out.println(e.getMessage());
@@ -94,8 +106,8 @@ class MainApp {
 				case 1 -> MovieGoerMenu();
 				case 2 -> StaffMenu();
 				case 3 -> {
-					showTimeController.deleteShowtime("Jaws", LocalDateTime.parse("2022-12-03T10:15:30"));
-					showTimeController.deleteShowtime("Jaws 2", LocalDateTime.parse("2022-12-03T19:15:30"));
+					showTimeController.deleteShowtime("Jaws", LocalDateTime.parse("2022-12-03T10:15:30"), "ORCHASCRN1");
+					showTimeController.deleteShowtime("Jaws 2", LocalDateTime.parse("2022-12-03T19:15:30"), "ORCHASCRN1");
 
 					movieController.deleteMovie("Jaws");
 					movieController.deleteMovie("Jaws 2");
@@ -114,7 +126,6 @@ class MainApp {
 	 * The user menu for Movie Goer login. Shows user menu for Movie Goer actions.
 	 */
 	public static void MovieGoerMenu() {
-		//TODO: admin needs USERNAME and pw, store in file.
 
 		boolean isRunning = true;
 		while (isRunning) {
@@ -163,28 +174,31 @@ class MainApp {
 	 * If password is correct, show the user menu for staff actions
 	 */
 	public static void StaffMenu() {
+		UserController userController = new UserController();
 		String currentPassword = "admin";
 		String enteredPassword = "";
 		int wrongCount = 3;
 		boolean isRunning = true;
 		boolean isLoginRunning = true;
 		boolean hasAccess = false;
+		String tempUsername = "";
+		String tempPassword = "";
 		while (isLoginRunning) {
 			System.out.println("MOBLIMA ADMIN STAFF LOGIN");
-			while (!(currentPassword.equals(enteredPassword))) {
-				System.out.println("Please enter admin password: ");
-				enteredPassword = ScannerController.getInputString();
-				if (!(currentPassword.equals(enteredPassword))) {
-					System.out.println("Wrong password.");
-					if (--wrongCount <= 0) {
-						System.out.println("Too many tries, exiting to main menu...");
-						isLoginRunning = false;
-						break;
-					}
-				} else {
-					System.out.println("Access granted.");
-					hasAccess = true;
-					isLoginRunning = false;
+			System.out.println("Please enter username: ");
+			tempUsername = ScannerController.getInputString();
+			System.out.println("Please enter password: ");
+			tempPassword = ScannerController.getInputString();
+			if(userController.isValidLogin(tempUsername, tempPassword) && userController.isStaff(tempUsername)) {
+				System.out.println("Access granted.");
+				hasAccess = true;
+				isLoginRunning = false;
+			} else {
+				System.out.println("Wrong username or password, or not admin account");
+				if(--wrongCount <= 0){
+				System.out.println("Too many tries, exiting to main menu...");
+				isLoginRunning = false;
+				break;
 				}
 			}
 		}
@@ -201,10 +215,12 @@ class MainApp {
 						Enter your selection:\040""");
 				switch (ScannerController.getInputInt()) {
 					case 1:
-						//TODO
+						EditMovieApp ema = new EditMovieApp();
+						ema.main();
 						break;
 					case 2:
-						//TODO
+						EditShowtimeApp esa = new EditShowtimeApp();
+						esa.main();
 						break;
 					case 3:
 						//TODO

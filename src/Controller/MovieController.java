@@ -146,6 +146,15 @@ public class MovieController {
 		}
 	}
 
+	public void getFullMovieCatalog(){
+		ArrayList<Movie> tempMovieList = read();
+		int i = 1;
+		for(Movie mov : tempMovieList){
+			System.out.println(i + ": " + mov.getTitle() + " (" +mov.getRating() + ")");
+			i++;
+		}
+	}
+
 
 
 
