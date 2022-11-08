@@ -101,4 +101,43 @@ public class SeatList implements Serializable {
 		returnedList.setSeatingPlan(tempSeatArray);
 		return returnedList;
 	}
+
+	public boolean isCoupleSeat(char rowChar, int col){
+		SeatList seatList = new SeatList();
+		Seat[][] tempSeatArray = seatList.getSeatingPlan();
+		int row;
+		switch (rowChar) {
+			case 'A':
+				row = 1;
+				break;
+			case 'B':
+				row = 2;
+				break;
+			case 'C':
+				row = 3;
+				break;
+			case 'D':
+				row = 4;
+				break;
+			case 'E':
+				row = 5;
+				break;
+			case 'F':
+				row = 6;
+				break;
+			case 'G':
+				row = 7;
+				break;
+			case 'H':
+				row = 8;
+				break;
+			case 'I':
+				row = 9;
+				break;
+			default:
+				row = -1;
+				break;
+		}
+		return tempSeatArray[row - 1][col - 1].isCoupleSeat();
+	}
 }

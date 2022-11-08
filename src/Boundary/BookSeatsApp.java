@@ -1,16 +1,19 @@
 package Boundary;
 
-import Controller.MovieController;
-import Controller.ScannerController;
-import Controller.ShowTimeController;
+import Controller.*;
 import Entity.Movie;
+import Entity.MovieGoer;
 import ExceptionPackage.SeatDoesNotExistException;
 import ExceptionPackage.SeatOccupiedException;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class BookSeatsApp {
 	MovieController movieController = new MovieController();
 	ShowTimeController showTimeController = new ShowTimeController();
-	public void main() {
+	UserController userController = new UserController();
+	public void main(MovieGoer currentUser) {
 		int choice = 0;
 		while(true){
 			movieController.getMovieCatalog();
@@ -54,10 +57,39 @@ public class BookSeatsApp {
 								System.out.println("Seat is already occupied, please try again");
 								break;
 							}
-							//TODO add user login system to track booking, on new username detection create new account and ask for age.
-							//TODO load user age and combine with current showtime date to determine price
-							//TODO add current booking to user history, add price to total sales
+
+
+
+
+							System.out.println("Please enter your details to confirm your booking");
+							System.out.println("Please enter your name");
+							String fullName = ScannerController.getInputString();
+							System.out.println("Please enter your mobile number");
+							int mobileNo = ScannerController.getInputInt();
+							System.out.println("Please enter your email address");
+							String email = ScannerController.getInputString();
+							System.out.println("Please enter your age");
+							int age = ScannerController.getInputInt();
+							userController.updateMovieGoer(currentUser.getUsername(), fullName, mobileNo, email, age);
+
+							boolean isCoupleSeat = showTimeController.read().get(showChoice).getShowSeatPlan().isCoupleSeat(row, col);
+							boolean hasCard = false;
+							System.out.println("Do you have a preferred credit/loyalty card? Enter 1 for yes, 0 for no");
+							if(ScannerController.getInputInt() == 1){
+								hasCard = true;
+								System.out.println("Preferred credit/loyalty card confirmed");
+							}
+							TicketPriceCalc ticketPriceCalc = new TicketPriceCalc();
+							double ticketPrice = ticketPriceCalc.main(movieController.getMovieByNo(choice).getType(), age, showTimeController.read().get(showChoice).getShowTime(), isCoupleSeat, hasCard);
+							movieController.addMovieEarning(movieController.getMovieByNo(choice).getTitle(), ticketPrice);
+
+							//TODO add current booking to user history, include TID
+
 							System.out.println("Seat booked at " + row + col);
+							System.out.println("Price: " + ticketPrice);
+							DateTimeFormatter TIDFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
+							String timeString = LocalDateTime.now().format(TIDFormatter);
+							System.out.println("TID: " + showTimeController.read().get(showChoice).getCinema().getNameCode() + "_"+ timeString);
 							showTimeController.getSeatingForShowtime(showChoice);
 						} else {
 							break;

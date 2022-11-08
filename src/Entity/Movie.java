@@ -11,9 +11,11 @@ public class Movie implements Serializable {
 	private String director;
 	private String[] cast;
 	private ArrayList<Review> reviews;
+	private double overallReviewScore;
 	private MovieType type;
 	private int duration;
 	private MovieRating rating;
+	double totalSales;
 
 	public Movie(String title, ShowStatus status, String synopsis, String director, String[] cast, MovieType type, int duration, MovieRating rating) {
 		this.title = title;
@@ -21,8 +23,8 @@ public class Movie implements Serializable {
 		this.synopsis = synopsis;
 		this.director = director;
 		this.cast = cast;
-		//this.reviews = reviews;
 		this.reviews = new ArrayList<Review>();	//by default, initialise with no reviews
+		this.overallReviewScore = 0.0;
 		this.type = type;
 		this.duration = duration;
 		this.rating = rating;
@@ -44,7 +46,8 @@ public class Movie implements Serializable {
 
 	public enum MovieType{
 		TYPE_REGULAR("regular"),
-		TYPE_3D("3D");
+		TYPE_3D("3D"),
+		TYPE_BLOCKBUSTER("blockbuster");
 		private final String text;
 		MovieType(final String text){
 			this.text = text;
@@ -118,6 +121,14 @@ public class Movie implements Serializable {
 		this.reviews = reviews;
 	}
 
+	public double getOverallReviewScore() {
+		return overallReviewScore;
+	}
+
+	public void setOverallReviewScore(double overallReviewScore) {
+		this.overallReviewScore = overallReviewScore;
+	}
+
 	public MovieType getType() {
 		return type;
 	}
@@ -140,6 +151,14 @@ public class Movie implements Serializable {
 
 	public void setRating(MovieRating rating) {
 		this.rating = rating;
+	}
+
+	public double getTotalSales() {
+		return totalSales;
+	}
+
+	public void setTotalSales(double totalSales) {
+		this.totalSales = totalSales;
 	}
 
 	public String toString(){

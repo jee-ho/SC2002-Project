@@ -25,6 +25,8 @@ class MainApp {
 		MovieController movieController = new MovieController();
 		ShowTimeController showTimeController = new ShowTimeController();
 		UserController userController = new UserController();
+		TicketPriceController ticketPriceController = new TicketPriceController();
+		HolidayController holidayController = new HolidayController();
 
 		ArrayList<Cinema> tempCinList= new ArrayList<Cinema>();
 		try{
@@ -41,8 +43,8 @@ class MainApp {
 			movieController.addMovie("Jaws", Movie.ShowStatus.NOWSHOWING, "Shark eats man", "Steven Spielberg",
 					new String[]{"Roy Scheider", "Robert Shaw", "Richard Dreyluss"}, Movie.MovieType.TYPE_REGULAR, 124, Movie.MovieRating.PG);
 
-			movieController.addMovie("Jaws 2", Movie.ShowStatus.PREVIEW, "Shark eats man", "Steven Spielberg",
-					new String[]{"Roy Scheider", "Robert Shaw", "Richard Dreyluss"}, Movie.MovieType.TYPE_REGULAR, 124, Movie.MovieRating.PG13);
+			movieController.addMovie("Jaws 2", Movie.ShowStatus.NOWSHOWING, "Shark eats man", "Steven Spielberg",
+					new String[]{"Roy Scheider", "Robert Shaw", "Richard Dreyluss"}, Movie.MovieType.TYPE_BLOCKBUSTER, 124, Movie.MovieRating.PG13);
 
 			movieController.addReview("Jaws", "TCL","good",4);
 			movieController.addReview("Jaws", "KEK","bad",2);
@@ -79,12 +81,15 @@ class MainApp {
 
 			try {
 				userController.addStaff("admin", "admin");
-				userController.addMovieGoer("watcher", "password", "Tan CL", 91234567, "a@b.com");
+				userController.addMovieGoer("watcher", "password", "Tan CL", 91234567, "a@b.com", 22);
 			} catch (ExistingUserException e) {
 				System.out.println(e.getMessage());
 			}
 
 			System.out.println(userController.read().get(0));
+
+			ticketPriceController.initialisePricesList();
+			holidayController.initialiseHolidays();
 
 			System.out.println("End of init");
 		} catch (Exception e){
@@ -106,13 +111,13 @@ class MainApp {
 				case 1 -> MovieGoerMenu();
 				case 2 -> StaffMenu();
 				case 3 -> {
-					showTimeController.deleteShowtime("Jaws", LocalDateTime.parse("2022-12-03T10:15:30"), "ORCHASCRN1");
-					showTimeController.deleteShowtime("Jaws 2", LocalDateTime.parse("2022-12-03T19:15:30"), "ORCHASCRN1");
+					//showTimeController.deleteShowtime("Jaws", LocalDateTime.parse("2022-12-03T10:15:30"), "ORCHASCRN1");
+					//showTimeController.deleteShowtime("Jaws 2", LocalDateTime.parse("2022-12-03T19:15:30"), "ORCHASCRN1");
 
-					movieController.deleteMovie("Jaws");
-					movieController.deleteMovie("Jaws 2");
+					//movieController.deleteMovie("Jaws");
+					//movieController.deleteMovie("Jaws 2");
 
-					cineplexController.deleteCineplex("Orchard Cineplex");
+					//cineplexController.deleteCineplex("Orchard Cineplex");
 					isRunning = false;
 					System.out.println("Exiting...");
 				}
@@ -126,11 +131,38 @@ class MainApp {
 	 * The user menu for Movie Goer login. Shows user menu for Movie Goer actions.
 	 */
 	public static void MovieGoerMenu() {
-
+		UserController userController = new UserController();
+		int wrongCount = 3;
 		boolean isRunning = true;
-		while (isRunning) {
-			System.out.println("MOBLIMA MOVIE GOER MENU");
-			System.out.println("""
+		boolean isLoginRunning = true;
+		boolean hasAccess = false;
+		String tempUsername = "";
+		String tempPassword = "";
+		MovieGoer currentUser = null;
+		while (isLoginRunning) {
+			System.out.println("MOBLIMA MOVIE GOER LOGIN");
+			System.out.println("Please enter username: ");
+			tempUsername = ScannerController.getInputString();
+			System.out.println("Please enter password: ");
+			tempPassword = ScannerController.getInputString();
+			if(userController.isValidLogin(tempUsername, tempPassword) && !(userController.isStaff(tempUsername))) {
+				currentUser = (MovieGoer) userController.getUserByUsername(tempUsername);
+				System.out.println("Access granted.");
+				hasAccess = true;
+				isLoginRunning = false;
+			} else {
+				System.out.println("Wrong username or password");
+				if(--wrongCount <= 0){
+					System.out.println("Too many tries, exiting to main menu...");
+					isLoginRunning = false;
+					break;
+				}
+			}
+		}
+		if(hasAccess){
+			while (isRunning) {
+				System.out.println("MOBLIMA MOVIE GOER MENU");
+				System.out.println("""
 					Available actions:
 					1. List movies & view movie details
 					2. Check showtimes and seat availability
@@ -139,34 +171,34 @@ class MainApp {
 					5. List top 5 movies by sales or ratings
 					6. Exit to main menu
 					Enter your selection:\040""");
-			switch (ScannerController.getInputInt()) {
-				case 1:
-					ListMovieApp lma = new ListMovieApp();
-					lma.main();
-					break;
-				case 2:
-					CheckSeatsApp csa = new CheckSeatsApp();
-					csa.main();
-					break;
-				case 3:
-					BookSeatsApp bsa = new BookSeatsApp();
-					bsa.main();
-					break;
-				case 4:
-					//TODO
-					break;
-				case 5:
-					//TODO
-					break;
-				case 6:
-					isRunning = false;
-					System.out.println("Exiting Movie Goer...");
-					break;
-				default:
-					System.out.println("Please enter a valid selection");
+				switch (ScannerController.getInputInt()) {
+					case 1:
+						ListMovieApp lma = new ListMovieApp();
+						lma.main();
+						break;
+					case 2:
+						CheckSeatsApp csa = new CheckSeatsApp();
+						csa.main();
+						break;
+					case 3:
+						BookSeatsApp bsa = new BookSeatsApp();
+						bsa.main(currentUser);
+						break;
+					case 4:
+						//TODO view booking history
+						break;
+					case 5:
+						//TODO list movie by sale/rating. linked to admin setting.
+						break;
+					case 6:
+						isRunning = false;
+						System.out.println("Exiting Movie Goer...");
+						break;
+					default:
+						System.out.println("Please enter a valid selection");
+				}
 			}
 		}
-
 	}
 
 	/**
@@ -175,8 +207,6 @@ class MainApp {
 	 */
 	public static void StaffMenu() {
 		UserController userController = new UserController();
-		String currentPassword = "admin";
-		String enteredPassword = "";
 		int wrongCount = 3;
 		boolean isRunning = true;
 		boolean isLoginRunning = true;
@@ -210,7 +240,7 @@ class MainApp {
 						Available actions:
 						1. Create/Update/Remove movie listing
 						2. Create/Update/Remove show times and movies
-						3. Configure system settings (edit public holidays or admin password)
+						3. Configure system settings
 						4. Exit
 						Enter your selection:\040""");
 				switch (ScannerController.getInputInt()) {
@@ -223,7 +253,8 @@ class MainApp {
 						esa.main();
 						break;
 					case 3:
-						//TODO
+						SystemSettingsApp ssa = new SystemSettingsApp();
+						ssa.main();
 						break;
 					case 4:
 						isRunning = false;

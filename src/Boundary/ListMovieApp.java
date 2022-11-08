@@ -16,6 +16,7 @@ public class ListMovieApp {
 				return;
 			}
 			movieController.getMovieDetailsByNo(choice);
+			//TODO ask to add a review
 		}
 	}
 }

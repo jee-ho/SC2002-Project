@@ -79,6 +79,7 @@ public class MovieController {
 	}
 	
 	public void addReview(String movieName, String author, String reviewText, int reviewScore){
+		//TODO recalculate movie's overall review score every time new review is added, update across showtimes like in changeMovieStatus()
 		File data = new File(FILENAME);
 		ArrayList<Movie> movies;
 		if(data.exists()){
@@ -118,13 +119,27 @@ public class MovieController {
 				}
 			}
 		}
-
-
-
-
-
 	}
 
+	public void addMovieEarning(String searchName, double earning) {
+		File data = new File(FILENAME);
+		ArrayList<Movie> movies;
+		if(data.exists()){
+			movies = read();
+			if(movies.size()!=0){
+				for (Movie movie : movies) {
+					if (movie.getTitle().equals(searchName)) {
+						movie.setTotalSales(movie.getTotalSales() + earning);
+
+						ShowTimeController stc = new ShowTimeController();
+						stc.updateMovieStatus(movie);
+
+						overwriteMovieList(FILENAME, movies);
+					}
+				}
+			}
+		}
+	}
 	public Movie getMovieByName(String searchName){
 		ArrayList<Movie> tempMovieList = read();
 		for(Movie mov : tempMovieList){

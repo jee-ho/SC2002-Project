@@ -7,11 +7,14 @@ public class MovieGoer extends User implements Serializable {
 	private int mobileNo;
 	private String email;
 
-	public MovieGoer(String username, String password, String fullName, int mobileNo, String email){
+	private int age;
+
+	public MovieGoer(String username, String password, String fullName, int mobileNo, String email, int age){
 		super(username, password);
 		this.fullName = fullName;
 		this.mobileNo = mobileNo;
 		this.email = email;
+		this.age = age;
 	}
 
 	public String getFullName() {
@@ -36,6 +39,14 @@ public class MovieGoer extends User implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
 	}
 
 	public boolean isStaff(){

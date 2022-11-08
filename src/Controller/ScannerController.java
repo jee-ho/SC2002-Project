@@ -47,6 +47,21 @@ public class ScannerController {
 		return input;
 	}
 
+	public static double getInputDouble(){
+		double input = -1.0;
+		boolean validInput = false;
+		while(!validInput) {
+			if(sc.hasNextDouble()){
+				input = sc.nextDouble();
+				validInput = true;
+			}
+			else{
+				System.out.println("Please enter a decimal (double)");
+			}
+			sc.nextLine();
+		}
+		return input;
+	}
 
 	/**
 	 * Closes the scanner.

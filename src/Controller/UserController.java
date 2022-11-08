@@ -1,7 +1,6 @@
 package Controller;
 
 import Entity.*;
-import ExceptionPackage.ExistingShowtimeException;
 import ExceptionPackage.ExistingUserException;
 
 import java.io.*;
@@ -26,6 +25,37 @@ public class UserController {
 		return false;
 	}
 
+	public User getUserByUsername(String searchName){
+		File data = new File(FILENAME);
+		ArrayList<User> userArrayList = new ArrayList<User>();
+		if(data.exists()){
+			userArrayList = read();
+			if (userArrayList.size() != 0) {
+				for(User user : userArrayList){
+					if(user.getUsername().equals(searchName)){
+						return user;
+					}
+				}
+			}
+		}
+		return null;
+	}
+
+	public void updateMovieGoer(String username, String fullName, int mobileNo, String email, int age){
+		File data = new File(FILENAME);
+		ArrayList<User> userArrayList = new ArrayList<User>();
+		if(data.exists()){
+			userArrayList = read();
+			if (userArrayList.size() != 0) {
+				for(User user : userArrayList){
+					if(user.getUsername().equals(username)){
+						user = new MovieGoer(user.getUsername(), user.getPassword(), fullName, mobileNo, email, age);
+					}
+				}
+			}
+		}
+	}
+
 	public boolean isStaff(String username){
 		File data = new File(FILENAME);
 		ArrayList<User> userArrayList = new ArrayList<User>();
@@ -33,7 +63,7 @@ public class UserController {
 			userArrayList = read();
 			if (userArrayList.size() != 0) {
 				for(User user : userArrayList){
-					if(user.isStaff()){
+					if(user.getUsername().equals(username) && user.isStaff()){
 						return true;
 					}
 				}
@@ -42,12 +72,12 @@ public class UserController {
 		return false;
 	}
 
-	public MovieGoer addMovieGoer(String username, String password, String fullName, int mobileNo, String email){
+	public MovieGoer addMovieGoer(String username, String password, String fullName, int mobileNo, String email, int age){
 		File data = new File(FILENAME);
 		ArrayList<User> userArrayList = new ArrayList<User>();
 		if(data.exists()){
 			userArrayList = read();
-			MovieGoer movieGoerToAdd = new MovieGoer(username, password, fullName, mobileNo, email);
+			MovieGoer movieGoerToAdd = new MovieGoer(username, password, fullName, mobileNo, email, age);
 			userArrayList.add(movieGoerToAdd);
 			overwriteUserList(FILENAME, userArrayList);
 			return movieGoerToAdd;
