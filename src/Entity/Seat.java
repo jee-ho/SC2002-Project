@@ -13,14 +13,26 @@ public class Seat implements Serializable {
 	private boolean isOccupied = false;
 	private boolean isCoupleSeat = false;
 
+	/**
+	 * Check if this seat exists
+	 * @return True if seat exists
+	 */
 	public boolean isExists() {
 		return isExists;
 	}
 
+	/**
+	 * Set existence of this seat
+	 * @param exists Boolean value of whether the seat exists
+	 */
 	public void setExists(boolean exists) {
 		isExists = exists;
 	}
 
+	/**
+	 * Check if this seat is occupied
+	 * @return True if seat is occupied
+	 */
 	public boolean isOccupied() {
 		return isOccupied;
 	}
@@ -39,10 +51,17 @@ public class Seat implements Serializable {
 		isOccupied = false;
 	}
 
+	/**
+	 * Check if seat is a couple seat.
+	 * @return Boolean value of whether the seat is a couple seat
+	 */
 	public boolean isCoupleSeat() {
 		return isCoupleSeat;
 	}
 
+	/**
+	 * Set this seat to be a couple seat
+	 */
 	public void setCoupleSeat() {
 		isCoupleSeat = true;
 	}

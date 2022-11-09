@@ -3,8 +3,16 @@ package Boundary;
 import Controller.ScannerController;
 import Controller.TicketPriceController;
 import Entity.TicketPrice;
-
+/**
+ * Runnable app for Staff to edit ticket prices.
+ * @author Tan Chuan Liang
+ * @version 1.0
+ * @since 2022-11-09
+ */
 public class EditPricesApp {
+	/**
+	 * Main runnable function for Staff to edit ticket prices.
+	 */
 	public void main(){
 		boolean isRunning = true;
 		TicketPriceController ticketPriceController = new TicketPriceController();

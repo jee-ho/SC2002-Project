@@ -41,7 +41,6 @@ public class Cineplex implements Serializable {
 		this.name = name;
 	}
 
-
 	/**
 	 * Get the list of cinemas in this cineplex.
 	 * @return ArrayList of Cinema objects.

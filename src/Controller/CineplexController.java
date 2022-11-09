@@ -7,9 +7,22 @@ import Entity.*;
 import ExceptionPackage.ExistingCineplexException;
 import ExceptionPackage.LessThan3CinemasException;
 
+/**
+ * Controller for interfacing with Cineplex objects.
+ * @author Tan Chuan Liang
+ * @version 1.0
+ * @since 2022-11-03
+ */
 public class CineplexController {
 	public final static String FILENAME = "cineplexes.txt";
 
+	/**
+	 * Creates a new cineplex.
+	 * @param name Name of cineplex.
+	 * @param cinemaList ArrayList of Cinemas to be added to this cineplex.
+	 * @throws LessThan3CinemasException Cineplex cannot have less than 3 Cinemas.
+	 * @throws ExistingCineplexException Cineplex with the same name already exists.
+	 */
 	public void createCineplex(String name, ArrayList<Cinema> cinemaList) throws LessThan3CinemasException, ExistingCineplexException {
 		File data = new File(FILENAME);
 		ArrayList<Cineplex> cineplexes = new ArrayList<Cineplex>();
@@ -42,6 +55,10 @@ public class CineplexController {
 		}
 	}
 
+	/**
+	 * Read the cineplex data file.
+	 * @return ArrayList of Cineplexes read from file.
+	 */
 	public ArrayList<Cineplex> read() {
 		try {
 			ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(FILENAME));
@@ -53,6 +70,12 @@ public class CineplexController {
 		}
 
 	}
+
+	/**
+	 * Rename an existing cineplex.
+	 * @param oldName Old name of the cineplex.
+	 * @param newName New name of the cineplex.
+	 */
 	public void renameCineplex(String oldName, String newName){
 		ArrayList<Cineplex> cineplexes = read();
 		ArrayList<Cineplex> returnList = new ArrayList<Cineplex>();
@@ -65,6 +88,11 @@ public class CineplexController {
 		}
 		overwriteCineplexList(FILENAME, returnList);
 	}
+
+	/**
+	 * Delete a cineplex by name.
+	 * @param name Name of cineplex to be deleted.
+	 */
 	public void deleteCineplex(String name){
 		ArrayList<Cineplex> cineplexes = read();
 		ArrayList<Cineplex> returnList = new ArrayList<Cineplex>();
@@ -78,6 +106,11 @@ public class CineplexController {
 
 	}
 
+	/**
+	 * Overwrite new data to the cineplexes data file.
+	 * @param filename Filename of the cineplexes data file.
+	 * @param data ArrayList of Cineplexes to be written.
+	 */
 	private void overwriteCineplexList(String filename, ArrayList<Cineplex> data){
 		File temp = new File(filename);
 		if(temp.exists()){
@@ -93,6 +126,11 @@ public class CineplexController {
 		}
 	}
 
+	/**
+	 * Get a Cinema object by its codename.
+	 * @param searchName Codename of the cinema.
+	 * @return Cinema object with this codename.
+	 */
 	public Cinema getCinemaByCodeName(String searchName){
 		ArrayList<Cineplex> cineplexes = read();
 

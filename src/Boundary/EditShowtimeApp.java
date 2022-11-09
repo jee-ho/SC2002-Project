@@ -9,9 +9,18 @@ import ExceptionPackage.NoSuchMovieException;
 
 import java.time.LocalDateTime;
 
+/**
+ * Runnable app for Staff to edit ShowTimes.
+ * @author Tan Chuan Liang
+ * @version 1.0
+ * @since 2022-11-08
+ */
 public class EditShowtimeApp {
 	ShowTimeController showTimeController = new ShowTimeController();
 	MovieController movieController = new MovieController();
+	/**
+	 * Main runnable function for Staff to edit ShowTimes.
+	 */
 	public void main(){
 		int choice = 0;
 		while(true){

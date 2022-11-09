@@ -3,10 +3,18 @@ package Controller;
 import Entity.Seat;
 
 import Entity.SeatList;
-import ExceptionPackage.SeatDoesNotExistException;
-import ExceptionPackage.SeatOccupiedException;
+/**
+ * Controller for interfacing with SeatList objects.
+ * @author Tan Chuan Liang
+ * @version 1.0
+ * @since 2022-11-08
+ */
 
 public class SeatListController {
+	/**
+	 * Print the layout of a seating plan.
+	 * @param seatingPlan Seating plan to print.
+	 */
 	public void printLayout(SeatList seatingPlan){
 		Seat[][] tempSeatArray = seatingPlan.getSeatingPlan();
 		for(int row = 9; row>= 0; row--){

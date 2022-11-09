@@ -4,9 +4,18 @@ import Entity.TicketPrice;
 
 import java.io.*;
 
+/**
+ * Controller for supporting prices data file operations.
+ * @author Tan Chuan Liang
+ * @version 1.0
+ * @since 2022-11-09
+ */
 public class TicketPriceController {
 	public final static String FILENAME = "prices.txt";
 
+	/**
+	 * Initialise the prices data file.
+	 */
 	public void initialisePricesList(){
 		File data = new File(FILENAME);
 		if(data.exists()){
@@ -16,6 +25,11 @@ public class TicketPriceController {
 		}
 
 	}
+
+	/**
+	 * Overwrite the prices data file with new TicketPrice.
+	 * @param ticketPrice New TicketPrice to overwrite with.
+	 */
 	public void overwritePricesList(TicketPrice ticketPrice){
 		File temp = new File(FILENAME);
 		if(temp.exists()){
@@ -31,6 +45,10 @@ public class TicketPriceController {
 		}
 	}
 
+	/**
+	 * Read from the prices data file.
+	 * @return TicketPrice in the data file.
+	 */
 	public TicketPrice read() {
 
 		try {

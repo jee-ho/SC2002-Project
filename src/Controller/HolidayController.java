@@ -1,15 +1,24 @@
 package Controller;
 
 import Entity.Holidays;
-import Entity.TicketPrice;
 
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
+/**
+ * Controller for interfacing with Holiday objects.
+ * @author Tan Chuan Liang
+ * @version 1.0
+ * @since 2022-11-09
+ */
 public class HolidayController {
 	public final static String FILENAME = "holidays.txt";
+
+	/**
+	 * Initialise the holidays data file
+	 */
 	public void initialiseHolidays(){
 		File data = new File(FILENAME);
 		if(data.exists()){
@@ -21,6 +30,10 @@ public class HolidayController {
 
 	}
 
+	/**
+	 * Overwrite the holidays data file
+	 * @param holidays Holidays data to overwrite with.
+	 */
 	public void overwriteHolidaysList(Holidays holidays){
 		File temp = new File(FILENAME);
 		if(temp.exists()){
@@ -36,6 +49,10 @@ public class HolidayController {
 		}
 	}
 
+	/**
+	 * Read the holidays data file.
+	 * @return Returns null if cannot read.
+	 */
 	public Holidays read() {
 		try {
 			ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(FILENAME));
@@ -49,6 +66,11 @@ public class HolidayController {
 
 	}
 
+	/**
+	 * Check if a Date and Time is a Holiday.
+	 * @param dateTime Date and time to check.
+	 * @return Boolean value of whether this date and time is a holiday
+	 */
 	public boolean isPH(LocalDateTime dateTime) {
 		Holidays holidays = read();
 		for(LocalDate holiday : holidays.getHolidayList()){

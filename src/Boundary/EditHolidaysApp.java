@@ -7,7 +7,16 @@ import Entity.Holidays;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+/**
+ * Runnable app for Staff to edit holidays.
+ * @author Tan Chuan Liang
+ * @version 1.0
+ * @since 2022-11-09
+ */
 public class EditHolidaysApp {
+	/**
+	 * Main runnable function for Staff to edit holidays.
+	 */
 	public void main(){
 		boolean isRunning = true;
 		Holidays output = new Holidays();

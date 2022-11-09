@@ -4,6 +4,9 @@ import ExceptionPackage.CinemaCodeNameException;
 
 /**
  * This CinemaPlatinumSuite class is a specialised Cinema object representing a Platinum Suite cinema.
+ * @author Tan Chuan Liang
+ * @version 1.0
+ * @since 2022-10-31
  */
 public class CinemaPlatinumSuite extends Cinema {
 	/**

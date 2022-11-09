@@ -4,6 +4,9 @@ import ExceptionPackage.CinemaCodeNameException;
 
 /**
  * This Cinema3D class is a specialised Cinema object representing a 3D movie cinema.
+ * @author Tan Chuan Liang
+ * @version 1.0
+ * @since 2022-10-31
  */
 public class Cinema3D extends Cinema {
 	/**

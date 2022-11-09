@@ -2,7 +2,16 @@ package Boundary;
 
 import Controller.ScannerController;
 
+/**
+ * Runnable app for Staff to edit system settings.
+ * @author Tan Chuan Liang
+ * @version 1.0
+ * @since 2022-11-09
+ */
 public class SystemSettingsApp {
+	/**
+	 * Main runnable function for Staff to edit system settings.
+	 */
 	public void main(){
 		boolean isRunning = true;
 		while(isRunning){

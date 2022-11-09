@@ -9,10 +9,21 @@ import ExceptionPackage.SeatOccupiedException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Runnable app for MovieGoer to book seats.
+ * @author Tan Chuan Liang
+ * @version 1.0
+ * @since 2022-11-06
+ */
 public class BookSeatsApp {
 	MovieController movieController = new MovieController();
 	ShowTimeController showTimeController = new ShowTimeController();
 	UserController userController = new UserController();
+
+	/**
+	 * Main runnable function for MovieGoer to book seats.
+	 * @param currentUser The current MovieGoer who is booking.
+	 */
 	public void main(MovieGoer currentUser) {
 		int choice = 0;
 		while(true){

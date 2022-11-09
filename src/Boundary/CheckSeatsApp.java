@@ -3,10 +3,19 @@ package Boundary;
 import Controller.MovieController;
 import Controller.ScannerController;
 import Controller.ShowTimeController;
-
+/**
+ * Runnable app for MovieGoer to check the seating list of a ShowTime.
+ * @author Tan Chuan Liang
+ * @version 1.0
+ * @since 2022-11-06
+ */
 public class CheckSeatsApp {
 	MovieController movieController = new MovieController();
 	ShowTimeController showTimeController = new ShowTimeController();
+
+	/**
+	 * Main runnable function for MovieGoer to check the seating list of a ShowTime.
+	 */
 	public void main(){
 		int choice = 0;
 		while(true){

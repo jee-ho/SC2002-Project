@@ -6,9 +6,25 @@ import Entity.TicketPrice;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 
+/**
+ * Special controller for calculating ticket prices.
+ * @author Tan Chuan Liang
+ * @version 1.0
+ * @since 2022-11-09
+ */
 public class TicketPriceCalc {
 	TicketPriceController ticketPriceController = new TicketPriceController();
 	HolidayController holidayController = new HolidayController();
+
+	/**
+	 * Calculate ticket price based on MovieGoer and Movie details.
+	 * @param movieType Type of Movie.
+	 * @param age Age of MovieGoer.
+	 * @param dateTime Date and time of screening.
+	 * @param isCoupleSeat True if a couple seat is being bought.
+	 * @param hasCard True if MovieGoer is booking with a credit/loyalty card.
+	 * @return Price of ticket.
+	 */
 	public double main(Movie.MovieType movieType, int age, LocalDateTime dateTime, boolean isCoupleSeat, boolean hasCard) {
 		TicketPrice ticketPrice = ticketPriceController.read();
 		double returnPrice = 0;

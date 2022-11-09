@@ -1,6 +1,5 @@
 package Controller;
 
-import Entity.Cinema;
 import Entity.Movie;
 import Entity.SeatList;
 import Entity.ShowTime;
@@ -12,9 +11,23 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+/**
+ * Controller for interfacing with ShowTime objects.
+ * @author Tan Chuan Liang
+ * @version 1.0
+ * @since 2022-11-08
+ */
 public class ShowTimeController {
 	public final static String FILENAME = "showtimes.txt";
 
+	/**
+	 * Create a new ShowTime.
+	 * @param movieName Movie to be screened.
+	 * @param time Date and time of screening.
+	 * @param cinemaName Codename of cinema where screening is occurring.
+	 * @throws ExistingShowtimeException New ShowTime cannot be same signature as an existing one.
+	 * @throws NoSuchMovieException Movie must exist in database to be added to ShowTime.
+	 */
 	public void createShowtime(String movieName, LocalDateTime time, String cinemaName) throws ExistingShowtimeException, NoSuchMovieException {
 		File data = new File(FILENAME);
 		ArrayList<ShowTime> showtimes = new ArrayList<ShowTime>();
@@ -50,6 +63,10 @@ public class ShowTimeController {
 		}
 	}
 
+	/**
+	 * Read the ShowTime data file.
+	 * @return ArrayList of ShowTimes in data file.
+	 */
 	public ArrayList<ShowTime> read() {
 		try {
 			ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(FILENAME));
@@ -61,6 +78,13 @@ public class ShowTimeController {
 		}
 
 	}
+
+	/**
+	 * Delete a ShowTime from datafile.
+	 * @param movieName Movie to be screened.
+	 * @param time Date and time of screening.
+	 * @param cinemaName Codename of cinema where screening is occurring.
+	 */
 	public void deleteShowtime(String movieName, LocalDateTime time, String cinemaName){
 		ArrayList<ShowTime> showTimes = read();
 		ArrayList<ShowTime> returnList = new ArrayList<ShowTime>();
@@ -74,6 +98,11 @@ public class ShowTimeController {
 
 	}
 
+	/**
+	 * Overwrite a ShowTime's details in data file.
+	 * @param filename Filename of ShowTime data file.
+	 * @param data ShowTime details to be overwritten.
+	 */
 	private void overwriteShowtimeList(String filename, ArrayList<ShowTime> data){
 		File temp = new File(filename);
 		if(temp.exists()){
@@ -89,6 +118,13 @@ public class ShowTimeController {
 		}
 	}
 
+	/**
+	 * Get a ShowTime from ShowTime data file
+	 * @param movieName Movie to be screened.
+	 * @param time Date and time of screening.
+	 * @param cinemaName Codename of cinema where screening is occurring.
+	 * @return ShowTime with this signature.
+	 */
 	public ShowTime getShowTime(String movieName, LocalDateTime time, String cinemaName){
 		ArrayList<ShowTime> showTimes = read();
 		for (ShowTime sho : showTimes) {
@@ -99,11 +135,21 @@ public class ShowTimeController {
 		return null;
 	}
 
+	/**
+	 * Get a ShowTime from ShowTime data file according to its int position in file.
+	 * @param i Int position in file.
+	 * @return ShowTime with this position.
+	 */
 	public ShowTime getShowTimeByNo(int i){
 		ArrayList<ShowTime> showTimes = read();
 		return showTimes.get(i);
 	}
 
+	/**
+	 * Get all ShowTimes for a given Movie.
+	 * @param movieName Name of movie.
+	 * @return ArrayList of ShowTimes screening this Movie.
+	 */
 	public ArrayList<ShowTime> getAllShowTimesForMovie(String movieName){
 		ArrayList<ShowTime> showTimes = read();
 		int i = 1;
@@ -116,6 +162,10 @@ public class ShowTimeController {
 		return showTimes;
 	}
 
+	/**
+	 * Print the seating list for a ShowTime according to its int position in file.
+	 * @param i Int position in data file.
+	 */
 	public void getSeatingForShowtime(int i){
 		ArrayList<ShowTime> showTimes = read();
 		ShowTime sho = showTimes.get(i);
@@ -124,17 +174,11 @@ public class ShowTimeController {
 		seatListController.printLayout(sho.getShowSeatPlan());
 	}
 
-	public void updateSeatList(ShowTime showtime, SeatList seatList){
-		ArrayList<ShowTime> showTimes = read();
 
-		for (ShowTime sho : showTimes) {
-			if (sho.getMovie().getTitle().equals(showtime.getMovie().getTitle()) && sho.getShowTime().isEqual(showtime.getShowTime()) && sho.getCinema().getNameCode().equals(showtime.getCinema().getNameCode()) ){
-				sho.setShowSeatPlan(seatList);
-			}
-		}
-		overwriteShowtimeList(FILENAME, showTimes);
-	}
-
+	/**
+	 * Update the movie for a ShowTime. Needed to ensure data consistency between Movie and ShowTime.
+	 * @param movie Movie to overwrite in ShowTime.
+	 */
 	public void updateMovieStatus(Movie movie){
 		File data2 = new File(FILENAME);
 		ArrayList<ShowTime> showtimes;
@@ -151,6 +195,12 @@ public class ShowTimeController {
 
 		}
 	}
+
+	/**
+	 * Update the seating list for a ShowTime.
+	 * @param show ShowTime to update.
+	 * @param seats New SeatList to overwrite with.
+	 */
 	public void updateSeatStatus(ShowTime show, SeatList seats){
 		File data2 = new File(FILENAME);
 		ArrayList<ShowTime> showtimes;

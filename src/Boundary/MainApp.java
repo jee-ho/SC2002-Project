@@ -129,6 +129,8 @@ class MainApp {
 
 	/**
 	 * The user menu for Movie Goer login. Shows user menu for Movie Goer actions.
+	 * Asks for MovieGoer username and password with maximum of "wrongCount" tries.
+	 * If password is correct, show the user menu for MovieGoer actions
 	 */
 	public static void MovieGoerMenu() {
 		UserController userController = new UserController();
@@ -202,8 +204,8 @@ class MainApp {
 	}
 
 	/**
-	 * The user menu for staff login. Asks for admin password with maximum of "wrongCount" tries.
-	 * If password is correct, show the user menu for staff actions
+	 * The user menu for staff login. Asks for Staff username and password with maximum of "wrongCount" tries.
+	 * If username and password is correct, show the user menu for staff actions
 	 */
 	public static void StaffMenu() {
 		UserController userController = new UserController();

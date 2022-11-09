@@ -38,14 +38,30 @@ public class SeatList implements Serializable {
 		}
 	}
 
+	/**
+	 * Get the seating plan.
+	 * @return The seating plan in a Seat[][] array.
+	 */
 	public Seat[][] getSeatingPlan() {
 		return seatingPlan;
 	}
 
+	/**
+	 * Set the seating plan.
+	 * @param seatingPlan The seating plan to set to.
+	 */
 	public void setSeatingPlan(Seat[][] seatingPlan) {
 		this.seatingPlan = seatingPlan;
 	}
 
+	/**
+	 * Book a Seat for a given SeatList.
+	 * @param rowChar The row character of the seat.
+	 * @param col The column number of the seat.
+	 * @return A new SeatList with booking applied.
+	 * @throws SeatDoesNotExistException Seat must exist to be booked.
+	 * @throws SeatOccupiedException Seat must not be occupied to be booked.
+	 */
 	public SeatList bookSeat(char rowChar, int col) throws SeatDoesNotExistException, SeatOccupiedException {
 		Seat[][] tempSeatArray = this.getSeatingPlan();
 		int row;
@@ -102,6 +118,12 @@ public class SeatList implements Serializable {
 		return returnedList;
 	}
 
+	/**
+	 * Check if a Seat is a couple seat from given row character and column number.
+	 * @param rowChar Row character of the seat.
+	 * @param col Column number of the seat.
+	 * @return Boolean value of whether the seat is a couple seat.
+	 */
 	public boolean isCoupleSeat(char rowChar, int col){
 		SeatList seatList = new SeatList();
 		Seat[][] tempSeatArray = seatList.getSeatingPlan();

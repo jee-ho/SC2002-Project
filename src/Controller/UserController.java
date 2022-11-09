@@ -6,9 +6,21 @@ import ExceptionPackage.ExistingUserException;
 import java.io.*;
 import java.util.ArrayList;
 
+/**
+ * Controller interfacing with User objects.
+ * @author Tan Chuan Liang
+ * @version 1.0
+ * @since 2022-11-09
+ */
 public class UserController {
 	public final static String FILENAME = "users.txt";
 
+	/**
+	 * Check if a given username and password is a valid user login.
+	 * @param username Username attempt.
+	 * @param password Password attempt.
+	 * @return True if valid user login.
+	 */
 	public boolean isValidLogin(String username, String password){
 		File data = new File(FILENAME);
 		ArrayList<User> userArrayList = new ArrayList<User>();
@@ -25,6 +37,11 @@ public class UserController {
 		return false;
 	}
 
+	/**
+	 * Gets a User according to username.
+	 * @param searchName Username of user to search.
+	 * @return User with this username.
+	 */
 	public User getUserByUsername(String searchName){
 		File data = new File(FILENAME);
 		ArrayList<User> userArrayList = new ArrayList<User>();
@@ -41,6 +58,14 @@ public class UserController {
 		return null;
 	}
 
+	/**
+	 * Update details of a MovieGoer.
+	 * @param username Username of MovieGoer.
+	 * @param fullName Full name of MovieGoer.
+	 * @param mobileNo Mobile number of MovieGoer.
+	 * @param email Email of MovieGoer.
+	 * @param age Age of MovieGoer.
+	 */
 	public void updateMovieGoer(String username, String fullName, int mobileNo, String email, int age){
 		File data = new File(FILENAME);
 		ArrayList<User> userArrayList = new ArrayList<User>();
@@ -56,6 +81,11 @@ public class UserController {
 		}
 	}
 
+	/**
+	 * Check if a User is Staff member, according to username.
+	 * @param username Username of User to check.
+	 * @return True if user is a Staff.
+	 */
 	public boolean isStaff(String username){
 		File data = new File(FILENAME);
 		ArrayList<User> userArrayList = new ArrayList<User>();
@@ -72,6 +102,15 @@ public class UserController {
 		return false;
 	}
 
+	/**
+	 * Add a new MovieGoer to User datafile.
+	 * @param username Username of MovieGoer.
+	 * @param fullName Full name of MovieGoer.
+	 * @param mobileNo Mobile number of MovieGoer.
+	 * @param email Email of MovieGoer.
+	 * @param age Age of MovieGoer.
+	 * @return MovieGoer object that was added.
+	 */
 	public MovieGoer addMovieGoer(String username, String password, String fullName, int mobileNo, String email, int age){
 		File data = new File(FILENAME);
 		ArrayList<User> userArrayList = new ArrayList<User>();
@@ -86,6 +125,13 @@ public class UserController {
 		return null;
 	}
 
+	/**
+	 * Add a new Staff to User datafile.
+	 * @param username Username of Staff.
+	 * @param password Password of Staff.
+	 * @return Staff object that was added.
+	 * @throws ExistingUserException Cannot add a new Staff when there is an existing Staff with same username.
+	 */
 	public Staff addStaff(String username, String password) throws ExistingUserException {
 		File data = new File(FILENAME);
 		ArrayList<User> userArrayList = new ArrayList<User>();
@@ -105,6 +151,10 @@ public class UserController {
 		return staffToAdd;
 	}
 
+	/**
+	 * Read from User data file.
+	 * @return ArrayList of Users from data file.
+	 */
 	public ArrayList<User> read() {
 		try {
 			ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(FILENAME));
@@ -117,6 +167,11 @@ public class UserController {
 
 	}
 
+	/**
+	 * Overwrite the User data file.
+	 * @param filename Filename of User data file.
+	 * @param data ArrayList of all Users.
+	 */
 	private void overwriteUserList(String filename, ArrayList<User> data){
 		File temp = new File(filename);
 		if(temp.exists()){

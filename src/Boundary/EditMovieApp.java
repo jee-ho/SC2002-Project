@@ -5,9 +5,17 @@ import Controller.ScannerController;
 import Entity.Movie;
 import ExceptionPackage.ExistingMovieException;
 
-
+/**
+ * Runnable app for Staff to edit movies.
+ * @author Tan Chuan Liang
+ * @version 1.0
+ * @since 2022-11-08
+ */
 public class EditMovieApp {
 	MovieController movieController = new MovieController();
+	/**
+	 * Main runnable function for Staff to edit movies.
+	 */
 	public void main(){
 		int choice = 0;
 		Movie tempMovie;
