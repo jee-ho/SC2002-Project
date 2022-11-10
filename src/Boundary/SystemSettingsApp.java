@@ -2,13 +2,15 @@ package Boundary;
 
 import Controller.ScannerController;
 
+import java.io.Serializable;
+
 /**
  * Runnable app for Staff to edit system settings.
  * @author Tan Chuan Liang
  * @version 1.0
  * @since 2022-11-09
  */
-public class SystemSettingsApp {
+public class SystemSettingsApp implements Serializable {
 	/**
 	 * Main runnable function for Staff to edit system settings.
 	 */
@@ -31,7 +33,8 @@ public class SystemSettingsApp {
 					epa.main();
 					break;
 				case 3:
-					//TODO admin control for changing display mode of top movies
+					EditMovieDisplayApp emd = new EditMovieDisplayApp();
+					emd.main();
 					break;
 				case 4:
 					return;

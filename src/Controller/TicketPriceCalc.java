@@ -1,5 +1,6 @@
 package Controller;
 
+import Entity.Cinema;
 import Entity.Movie;
 import Entity.TicketPrice;
 import Entity.TicketInfo;
@@ -19,6 +20,7 @@ public class TicketPriceCalc {
 
 	/**
 	 * Calculate ticket price based on MovieGoer and Movie details.
+	 * @param cinemaType Type of Cinema. NOTE: CIN_PREMIUM premium cinemas add a flat $1.50 per seat.
 	 * @param movieType Type of Movie.
 	 * @param age Age of MovieGoer.
 	 * @param dateTime Date and time of screening.
@@ -27,7 +29,12 @@ public class TicketPriceCalc {
 	 * @return Price of ticket.
 	 */
 
+  //newly merged code below
 	public TicketInfo main(Movie.MovieType movieType, int age, LocalDateTime dateTime, boolean isCoupleSeat, boolean hasCard) {
+
+  //old code below
+  //public double main(Cinema.CinemaTypes cinemaType, Movie.MovieType movieType, int age, LocalDateTime dateTime, boolean isCoupleSeat, boolean hasCard) {
+
 		TicketPrice ticketPrice = ticketPriceController.read();
 		double returnPrice = 0;
 		String ticketType = "";
@@ -92,7 +99,9 @@ public class TicketPriceCalc {
 		if (movieType == Movie.MovieType.TYPE_BLOCKBUSTER) {
 			returnPrice += 1;
 		}
-
+		if (cinemaType == Cinema.CinemaTypes.CIN_PREMIUM){
+			returnPrice += 1.5;
+		}
 		if (isCoupleSeat) {
 			returnPrice *= 2;
 		}

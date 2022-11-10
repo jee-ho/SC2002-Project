@@ -14,9 +14,8 @@ public class EditPricesApp {
 	 * Main runnable function for Staff to edit ticket prices.
 	 */
 	public void main(){
-		boolean isRunning = true;
 		TicketPriceController ticketPriceController = new TicketPriceController();
-		while(isRunning){
+		while(true){
 			TicketPrice ticketPrice = ticketPriceController.read();
 			System.out.println("Choose a ticket price to edit, or enter 0 to exit:");
 			System.out.println("1. Senior Citizen Weekday " + ticketPrice.getSeniorCitizenWeekday());

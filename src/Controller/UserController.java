@@ -65,8 +65,9 @@ public class UserController {
 	 * @param mobileNo Mobile number of MovieGoer.
 	 * @param email Email of MovieGoer.
 	 * @param age Age of MovieGoer.
+	 * @param booking Bookings of MovieGoer.
 	 */
-	public void updateMovieGoer(String username, String fullName, int mobileNo, String email, int age){
+	public void updateMovieGoer(String username, String fullName, int mobileNo, String email, int age, ArrayList<Booking> booking){
 		File data = new File(FILENAME);
 		ArrayList<User> userArrayList = new ArrayList<User>();
 		if(data.exists()){
@@ -74,7 +75,11 @@ public class UserController {
 			if (userArrayList.size() != 0) {
 				for(User user : userArrayList){
 					if(user.getUsername().equals(username)){
-						user = new MovieGoer(user.getUsername(), user.getPassword(), fullName, mobileNo, email, age);
+						MovieGoer tempMovieGoer = (MovieGoer) user;
+						userArrayList.remove(user);
+						tempMovieGoer = new MovieGoer(username, tempMovieGoer.getPassword(), fullName, mobileNo, email, age, booking);
+						userArrayList.add(tempMovieGoer);
+						overwriteUserList(FILENAME, userArrayList);
 					}
 				}
 			}
@@ -105,24 +110,43 @@ public class UserController {
 	/**
 	 * Add a new MovieGoer to User datafile.
 	 * @param username Username of MovieGoer.
+	 * @param password Password of MovieGoer.
 	 * @param fullName Full name of MovieGoer.
 	 * @param mobileNo Mobile number of MovieGoer.
 	 * @param email Email of MovieGoer.
 	 * @param age Age of MovieGoer.
+	 * @param bookings Bookings of MovieGoer.
 	 * @return MovieGoer object that was added.
 	 */
-	public MovieGoer addMovieGoer(String username, String password, String fullName, int mobileNo, String email, int age){
+	public MovieGoer addMovieGoer(String username, String password, String fullName, int mobileNo, String email, int age, ArrayList<Booking> bookings){
 		File data = new File(FILENAME);
 		ArrayList<User> userArrayList = new ArrayList<User>();
 		if(data.exists()){
 			userArrayList = read();
-			MovieGoer movieGoerToAdd = new MovieGoer(username, password, fullName, mobileNo, email, age);
+			MovieGoer movieGoerToAdd = new MovieGoer(username, password, fullName, mobileNo, email, age, bookings);
 			userArrayList.add(movieGoerToAdd);
 			overwriteUserList(FILENAME, userArrayList);
 			return movieGoerToAdd;
 		}
 
 		return null;
+	}
+
+	/**
+	 * Deletes a user from user data file.
+	 * @param searchName Username of user to delete.
+	 */
+	public void deleteUser(String searchName){
+		ArrayList<User> users = read();
+		ArrayList<User> returnList = new ArrayList<User>();
+
+		for (User user : users) {
+			if (!(user.getUsername().equals(searchName))) {
+				returnList.add(user);
+			}
+		}
+		overwriteUserList(FILENAME, returnList);
+
 	}
 
 	/**
