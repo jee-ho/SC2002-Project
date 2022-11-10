@@ -4,9 +4,7 @@ package Entity;
 import Controller.SeatListController;
 
 import java.io.Serializable;
-import java.time.DayOfWeek;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 /**
  * This ShowTime class contains data about sessions of movie screenings in a cinema, and seating for the session.
