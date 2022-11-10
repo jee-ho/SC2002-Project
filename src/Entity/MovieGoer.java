@@ -1,6 +1,7 @@
 package Entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * This MovieGoer class is a specific instantiation of User..
@@ -14,6 +15,7 @@ public class MovieGoer extends User implements Serializable {
 	private String email;
 
 	private int age;
+	private ArrayList<Booking> bookings = new ArrayList<Booking>();
 
 	/**
 	 * Constructor for MovieGoer.
@@ -23,13 +25,15 @@ public class MovieGoer extends User implements Serializable {
 	 * @param mobileNo Mobile number of MovieGoer.
 	 * @param email Email of MovieGoer.
 	 * @param age Age of MovieGoer.
+	 * @param bookings Bookings of MovieGoer.
 	 */
-	public MovieGoer(String username, String password, String fullName, int mobileNo, String email, int age){
+	public MovieGoer(String username, String password, String fullName, int mobileNo, String email, int age, ArrayList<Booking> bookings){
 		super(username, password);
 		this.fullName = fullName;
 		this.mobileNo = mobileNo;
 		this.email = email;
 		this.age = age;
+		this.bookings = bookings;
 	}
 
 	/**
@@ -94,6 +98,22 @@ public class MovieGoer extends User implements Serializable {
 	 */
 	public void setAge(int age) {
 		this.age = age;
+	}
+
+	/**
+	 * Get MovieGoer's bookings.
+	 * @return MovieGoer's bookings.
+	 */
+	public ArrayList<Booking> getBookings() {
+		return bookings;
+	}
+
+	/**
+	 * Set MovieGoer's bookings.
+	 * @param bookings MovieGoer's bookings.
+	 */
+	public void setBookings(ArrayList<Booking> bookings) {
+		this.bookings = bookings;
 	}
 
 	/**

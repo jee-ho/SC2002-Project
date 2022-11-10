@@ -27,6 +27,7 @@ class MainApp {
 		UserController userController = new UserController();
 		TicketPriceController ticketPriceController = new TicketPriceController();
 		HolidayController holidayController = new HolidayController();
+		SystemSettingsController systemSettingsController = new SystemSettingsController();
 
 		ArrayList<Cinema> tempCinList= new ArrayList<Cinema>();
 		try{
@@ -47,7 +48,7 @@ class MainApp {
 					new String[]{"Roy Scheider", "Robert Shaw", "Richard Dreyluss"}, Movie.MovieType.TYPE_BLOCKBUSTER, 124, Movie.MovieRating.PG13);
 
 			movieController.addReview("Jaws", "TCL","good",4);
-			movieController.addReview("Jaws", "KEK","bad",2);
+			//movieController.addReview("Jaws", "KEK","bad",2);
 
 			System.out.println(movieController.read().get(0).toString());
 
@@ -64,7 +65,7 @@ class MainApp {
 			//showTimeController.updateSeatList(tempsho2, seatListController.bookSeat(tempsho2.getShowSeatPlan(),'B',2));
 			showTimeController.updateSeatStatus(showTimeController.read().get(1), showTimeController.read().get(1).getShowSeatPlan().bookSeat('B', 2));
 
-			movieController.changeMovieStatus("Jaws", Movie.ShowStatus.ENDOFSHOWING);
+			//movieController.changeMovieStatus("Jaws", Movie.ShowStatus.ENDOFSHOWING);
 
 
 			//seatListController.printLayout(tempsho.getShowSeatPlan());
@@ -81,7 +82,7 @@ class MainApp {
 
 			try {
 				userController.addStaff("admin", "admin");
-				userController.addMovieGoer("watcher", "password", "Tan CL", 91234567, "a@b.com", 22);
+				userController.addMovieGoer("watcher", "password", "Tan CL", 91234567, "a@b.com", 22, new ArrayList<Booking>());
 			} catch (ExistingUserException e) {
 				System.out.println(e.getMessage());
 			}
@@ -90,6 +91,7 @@ class MainApp {
 
 			ticketPriceController.initialisePricesList();
 			holidayController.initialiseHolidays();
+			systemSettingsController.initialiseSettings();
 
 			System.out.println("End of init");
 		} catch (Exception e){
@@ -176,7 +178,7 @@ class MainApp {
 				switch (ScannerController.getInputInt()) {
 					case 1:
 						ListMovieApp lma = new ListMovieApp();
-						lma.main();
+						lma.main(currentUser);
 						break;
 					case 2:
 						CheckSeatsApp csa = new CheckSeatsApp();
@@ -187,10 +189,12 @@ class MainApp {
 						bsa.main(currentUser);
 						break;
 					case 4:
-						//TODO view booking history
+						ListBookingApp lba = new ListBookingApp();
+						lba.main(currentUser);
 						break;
 					case 5:
-						//TODO list movie by sale/rating. linked to admin setting.
+						ListTopMoviesApp ltma = new ListTopMoviesApp();
+						ltma.main();
 						break;
 					case 6:
 						isRunning = false;

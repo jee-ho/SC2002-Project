@@ -1,8 +1,10 @@
 package Boundary;
 
 import Controller.*;
+import Entity.Booking;
 import Entity.Movie;
 import Entity.MovieGoer;
+import Entity.ShowTime;
 import ExceptionPackage.SeatDoesNotExistException;
 import ExceptionPackage.SeatOccupiedException;
 
@@ -81,7 +83,7 @@ public class BookSeatsApp {
 							String email = ScannerController.getInputString();
 							System.out.println("Please enter your age");
 							int age = ScannerController.getInputInt();
-							userController.updateMovieGoer(currentUser.getUsername(), fullName, mobileNo, email, age);
+
 
 							boolean isCoupleSeat = showTimeController.read().get(showChoice).getShowSeatPlan().isCoupleSeat(row, col);
 							boolean hasCard = false;
@@ -94,13 +96,19 @@ public class BookSeatsApp {
 							double ticketPrice = ticketPriceCalc.main(movieController.getMovieByNo(choice).getType(), age, showTimeController.read().get(showChoice).getShowTime(), isCoupleSeat, hasCard);
 							movieController.addMovieEarning(movieController.getMovieByNo(choice).getTitle(), ticketPrice);
 
-							//TODO add current booking to user history, include TID
-
 							System.out.println("Seat booked at " + row + col);
 							System.out.println("Price: " + ticketPrice);
 							DateTimeFormatter TIDFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
 							String timeString = LocalDateTime.now().format(TIDFormatter);
-							System.out.println("TID: " + showTimeController.read().get(showChoice).getCinema().getNameCode() + "_"+ timeString);
+							ShowTime selectedShowTime = showTimeController.read().get(showChoice);
+							String TID = selectedShowTime.getCinema().getNameCode() + "_"+ timeString;
+							System.out.println("TID: " + TID);
+							System.out.println("Booking added: ");
+							BookingController bookingController = new BookingController();
+							Booking newBooking = bookingController.addBooking(currentUser, TID, selectedShowTime.getCinema().getNameCode(), selectedShowTime.getShowTime(), selectedShowTime.getMovie().getTitle());
+							System.out.println(newBooking.toString());
+
+
 							showTimeController.getSeatingForShowtime(showChoice);
 						} else {
 							break;
