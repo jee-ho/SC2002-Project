@@ -143,4 +143,18 @@ public class CineplexController {
 		}
 		return null;
 	}
+	
+	public String getCineplexByCodeName(String searchName){
+		ArrayList<Cineplex> cineplexes = read();
+
+		for (Cineplex cinep : cineplexes) {
+			for(Cinema cinem : cinep.getCinemaList()){
+				if(cinem.getNameCode().equals(searchName)){
+					return cinep.getName();
+				}
+			}
+		}
+		return null;
+	}
+}
 }

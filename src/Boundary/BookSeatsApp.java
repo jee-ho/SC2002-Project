@@ -3,6 +3,7 @@ package Boundary;
 import Controller.*;
 import Entity.Movie;
 import Entity.MovieGoer;
+import Entity.TicketInfo;
 import ExceptionPackage.SeatDoesNotExistException;
 import ExceptionPackage.SeatOccupiedException;
 
@@ -19,6 +20,8 @@ public class BookSeatsApp {
 	MovieController movieController = new MovieController();
 	ShowTimeController showTimeController = new ShowTimeController();
 	UserController userController = new UserController();
+	BookingHistoryController bookingHistoryController = new BookingHistoryController();
+	CineplexController cineplexController = new CineplexController();
 
 	/**
 	 * Main runnable function for MovieGoer to book seats.
@@ -91,16 +94,26 @@ public class BookSeatsApp {
 								System.out.println("Preferred credit/loyalty card confirmed");
 							}
 							TicketPriceCalc ticketPriceCalc = new TicketPriceCalc();
-							double ticketPrice = ticketPriceCalc.main(movieController.getMovieByNo(choice).getType(), age, showTimeController.read().get(showChoice).getShowTime(), isCoupleSeat, hasCard);
-							movieController.addMovieEarning(movieController.getMovieByNo(choice).getTitle(), ticketPrice);
+							TicketInfo ticketPrice = ticketPriceCalc.main(movieController.getMovieByNo(choice).getType(), age, showTimeController.read().get(showChoice).getShowTime(), isCoupleSeat, hasCard);
+							movieController.addMovieEarning(movieController.getMovieByNo(choice).getTitle(), ticketPrice.getreturnPrice());
 
 							//TODO add current booking to user history, include TID
 
 							System.out.println("Seat booked at " + row + col);
-							System.out.println("Price: " + ticketPrice);
+							System.out.println("Price: " + ticketPrice.getreturnPrice());
 							DateTimeFormatter TIDFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
 							String timeString = LocalDateTime.now().format(TIDFormatter);
-							System.out.println("TID: " + showTimeController.read().get(showChoice).getCinema().getNameCode() + "_"+ timeString);
+							LocalDateTime timeDate = LocalDateTime.now();
+							String nameCode = showTimeController.read().get(showChoice).getCinema().getNameCode();
+							String TID = nameCode + "_"+ timeString;
+							System.out.println("TID: " + TID);
+							String name = cineplexController.getCineplexByCodeName(nameCode);
+							System.out.print(cineplexController.getCinemaByCodeName(nameCode));
+							LocalDateTime showtime = showTimeController.getShowTimeByNo(showChoice).getShowTime();
+							String screen = cineplexController.getCinemaByCodeName(nameCode).getName();
+							// String movieTitle = movieController.getMovieByNo(choice).getTitle();
+							// String movieRating = movieController.getMovieByNo(choice).getRating().toString();
+							bookingHistoryController.addBookingHistory(TID, currentUser, name, screen, movieController.getMovieByNo(choice), showtime, timeDate, ticketPrice.getticketType(), row, col, ticketPrice.getreturnPrice());
 							showTimeController.getSeatingForShowtime(showChoice);
 						} else {
 							break;

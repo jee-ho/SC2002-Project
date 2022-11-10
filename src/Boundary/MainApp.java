@@ -187,7 +187,8 @@ class MainApp {
 						bsa.main(currentUser);
 						break;
 					case 4:
-						//TODO view booking history
+						BookingHistoryApp bha = new BookingHistoryApp();
+						bha.main(currentUser);
 						break;
 					case 5:
 						//TODO list movie by sale/rating. linked to admin setting.
