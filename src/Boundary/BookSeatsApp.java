@@ -4,7 +4,11 @@ import Controller.*;
 import Entity.Booking;
 import Entity.Movie;
 import Entity.MovieGoer;
+
+import Entity.TicketInfo;
+
 import Entity.ShowTime;
+
 import ExceptionPackage.SeatDoesNotExistException;
 import ExceptionPackage.SeatOccupiedException;
 
@@ -21,6 +25,8 @@ public class BookSeatsApp {
 	MovieController movieController = new MovieController();
 	ShowTimeController showTimeController = new ShowTimeController();
 	UserController userController = new UserController();
+	BookingHistoryController bookingHistoryController = new BookingHistoryController();
+	CineplexController cineplexController = new CineplexController();
 
 	/**
 	 * Main runnable function for MovieGoer to book seats.
@@ -93,20 +99,42 @@ public class BookSeatsApp {
 								System.out.println("Preferred credit/loyalty card confirmed");
 							}
 							TicketPriceCalc ticketPriceCalc = new TicketPriceCalc();
-							double ticketPrice = ticketPriceCalc.main(showTimeController.read().get(showChoice).getCinema().getCinemaType(), movieController.getMovieByNo(choice).getType(), age, showTimeController.read().get(showChoice).getShowTime(), isCoupleSeat, hasCard);
-							movieController.addMovieEarning(movieController.getMovieByNo(choice).getTitle(), ticketPrice);
+
+              //newly merged code below
+							TicketInfo ticketPrice = ticketPriceCalc.main(movieController.getMovieByNo(choice).getType(), age, showTimeController.read().get(showChoice).getShowTime(), isCoupleSeat, hasCard);
+							movieController.addMovieEarning(movieController.getMovieByNo(choice).getTitle(), ticketPrice.getreturnPrice());
+
+              //old code below
+							//double ticketPrice = ticketPriceCalc.main(showTimeController.read().get(showChoice).getCinema().getCinemaType(), movieController.getMovieByNo(choice).getType(), age, showTimeController.read().get(showChoice).getShowTime(), isCoupleSeat, hasCard);
+							//movieController.addMovieEarning(movieController.getMovieByNo(choice).getTitle(), ticketPrice);
+
 
 							System.out.println("Seat booked at " + row + col);
-							System.out.println("Price: " + ticketPrice);
+							System.out.println("Price: " + ticketPrice.getreturnPrice());
 							DateTimeFormatter TIDFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
 							String timeString = LocalDateTime.now().format(TIDFormatter);
-							ShowTime selectedShowTime = showTimeController.read().get(showChoice);
-							String TID = selectedShowTime.getCinema().getNameCode() + "_"+ timeString;
+              
+              //newly merged code below
+							LocalDateTime timeDate = LocalDateTime.now();
+							String nameCode = showTimeController.read().get(showChoice).getCinema().getNameCode();
+							String TID = nameCode + "_"+ timeString;
 							System.out.println("TID: " + TID);
-							System.out.println("Booking added: ");
-							BookingController bookingController = new BookingController();
-							Booking newBooking = bookingController.addBooking(currentUser, TID, selectedShowTime.getCinema().getNameCode(), selectedShowTime.getShowTime(), selectedShowTime.getMovie().getTitle());
-							System.out.println(newBooking.toString());
+							String name = cineplexController.getCineplexByCodeName(nameCode);
+							System.out.print(cineplexController.getCinemaByCodeName(nameCode));
+							LocalDateTime showtime = showTimeController.getShowTimeByNo(showChoice).getShowTime();
+							String screen = cineplexController.getCinemaByCodeName(nameCode).getName();
+							// String movieTitle = movieController.getMovieByNo(choice).getTitle();
+							// String movieRating = movieController.getMovieByNo(choice).getRating().toString();
+							bookingHistoryController.addBookingHistory(TID, currentUser, name, screen, movieController.getMovieByNo(choice), showtime, timeDate, ticketPrice.getticketType(), row, col, ticketPrice.getreturnPrice());
+              
+              //old code below
+							//ShowTime selectedShowTime = showTimeController.read().get(showChoice);
+							//String TID = selectedShowTime.getCinema().getNameCode() + "_"+ timeString;
+							//System.out.println("TID: " + TID);
+							//System.out.println("Booking added: ");
+							//BookingController bookingController = new BookingController();
+							//Booking newBooking = bookingController.addBooking(currentUser, TID, selectedShowTime.getCinema().getNameCode(), selectedShowTime.getShowTime(), selectedShowTime.getMovie().getTitle());
+							//System.out.println(newBooking.toString());
 
 
 							showTimeController.getSeatingForShowtime(showChoice);

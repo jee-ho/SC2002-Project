@@ -181,8 +181,15 @@ class MainApp {
 						bookSeatsApp.main(currentUser);
 						break;
 					case 4:
-						ListBookingApp listBookingApp = new ListBookingApp();
-						listBookingApp.main(currentUser);
+
+            //newly merged code below
+						BookingHistoryApp bha = new BookingHistoryApp();
+						bha.main(currentUser);
+
+            //old code below
+						//ListBookingApp listBookingApp = new ListBookingApp();
+						//listBookingApp.main(currentUser);
+
 						break;
 					case 5:
 						ListTopMoviesApp listTopMoviesApp = new ListTopMoviesApp();
