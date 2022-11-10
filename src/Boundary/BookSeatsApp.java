@@ -93,7 +93,7 @@ public class BookSeatsApp {
 								System.out.println("Preferred credit/loyalty card confirmed");
 							}
 							TicketPriceCalc ticketPriceCalc = new TicketPriceCalc();
-							double ticketPrice = ticketPriceCalc.main(movieController.getMovieByNo(choice).getType(), age, showTimeController.read().get(showChoice).getShowTime(), isCoupleSeat, hasCard);
+							double ticketPrice = ticketPriceCalc.main(showTimeController.read().get(showChoice).getCinema().getCinemaType(), movieController.getMovieByNo(choice).getType(), age, showTimeController.read().get(showChoice).getShowTime(), isCoupleSeat, hasCard);
 							movieController.addMovieEarning(movieController.getMovieByNo(choice).getTitle(), ticketPrice);
 
 							System.out.println("Seat booked at " + row + col);

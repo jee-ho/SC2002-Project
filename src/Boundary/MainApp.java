@@ -2,7 +2,6 @@ package Boundary;
 
 import Controller.*;
 import Entity.*;
-import ExceptionPackage.ExistingUserException;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -10,8 +9,8 @@ import java.util.ArrayList;
 /**
  * This is the main class.
  * @author Tan Chuan Liang
- * @version 1.1
- * @since 2022-10-30
+ * @version 1.2
+ * @since 2022-11-10
  */
 class MainApp {
 	/**
@@ -29,14 +28,28 @@ class MainApp {
 		HolidayController holidayController = new HolidayController();
 		SystemSettingsController systemSettingsController = new SystemSettingsController();
 
-		ArrayList<Cinema> tempCinList= new ArrayList<Cinema>();
+
 		try{
-
-			tempCinList.add(new Cinema("scr1", "ORCHASCRN1"));
-			tempCinList.add(new Cinema("scr2", "ORCHASCRN2"));
-			tempCinList.add(new Cinema("scr3", "ORCHASCRN3"));
-			cineplexController.createCineplex("Orchard Cineplex", tempCinList);
-
+			ArrayList<Cinema> orchardCinList= new ArrayList<Cinema>();
+			orchardCinList.add(new Cinema("scr1", "ORCHASCRN1"));
+			orchardCinList.add(new CinemaPlatinumSuite("scr2", "ORCHASCRN2"));
+			orchardCinList.add(new Cinema3D("scr3", "ORCHASCRN3"));
+			cineplexController.createCineplex("Orchard Cineplex", orchardCinList);
+			ArrayList<Cinema> causewayCinList= new ArrayList<Cinema>();
+			causewayCinList.add(new Cinema("scr1", "CAUSESCRN1"));
+			causewayCinList.add(new Cinema("scr2", "CAUSESCRN2"));
+			causewayCinList.add(new Cinema("scr3", "CAUSESCRN3"));
+			cineplexController.createCineplex("Orchard Cineplex", causewayCinList);
+			ArrayList<Cinema> amkCinList= new ArrayList<Cinema>();
+			amkCinList.add(new Cinema("scr1", "AMKHUSCRN1"));
+			amkCinList.add(new Cinema("scr2", "AMKHUSCRN2"));
+			amkCinList.add(new Cinema("scr3", "AMKHUSCRN3"));
+			cineplexController.createCineplex("Orchard Cineplex", amkCinList);
+			ArrayList<Cinema> downtownEastCinList= new ArrayList<Cinema>();
+			downtownEastCinList.add(new Cinema("scr1", "DNTNESCRN1"));
+			downtownEastCinList.add(new Cinema("scr2", "DNTNESCRN2"));
+			downtownEastCinList.add(new Cinema("scr3", "DNTNESCRN3"));
+			cineplexController.createCineplex("Orchard Cineplex", downtownEastCinList);
 
 			System.out.println(cineplexController.read().get(0).toString());
 
@@ -49,44 +62,22 @@ class MainApp {
 
 			movieController.addReview("Jaws", "TCL","good",4);
 			//movieController.addReview("Jaws", "KEK","bad",2);
-
-			System.out.println(movieController.read().get(0).toString());
-
+			//System.out.println(movieController.read().get(0).toString());
+			//movieController.changeMovieStatus("Jaws", Movie.ShowStatus.ENDOFSHOWING);
+			movieController.getFullMovieCatalog();
 
 			showTimeController.createShowtime("Jaws", LocalDateTime.parse("2022-12-03T10:15:30"), "ORCHASCRN1");
 			showTimeController.createShowtime("Jaws 2", LocalDateTime.parse("2022-12-03T19:15:30"), "ORCHASCRN1");
-
 			System.out.println(showTimeController.read().get(0).toString());
 
-			//ShowTime tempsho = showTimeController.getShowTime("Jaws", LocalDateTime.parse("2022-12-03T10:15:30"), "ORCHASCRN1");
-			//showTimeController.updateSeatList(tempsho, seatListController.bookSeat(tempsho.getShowSeatPlan(),'A',12));
-
-			//ShowTime tempsho2 = showTimeController.getShowTime("Jaws 2", LocalDateTime.parse("2022-12-03T19:15:30"), "ORCHASCRN1");
-			//showTimeController.updateSeatList(tempsho2, seatListController.bookSeat(tempsho2.getShowSeatPlan(),'B',2));
 			showTimeController.updateSeatStatus(showTimeController.read().get(1), showTimeController.read().get(1).getShowSeatPlan().bookSeat('B', 2));
-
-			//movieController.changeMovieStatus("Jaws", Movie.ShowStatus.ENDOFSHOWING);
-
-
-			//seatListController.printLayout(tempsho.getShowSeatPlan());
-			//seatListController.printLayout(tempsho2.getShowSeatPlan());
 			showTimeController.getSeatingForShowtime(1);
-			//showTimeController.getSeatingForShowtime(1);
 
-			movieController.getMovieCatalog();
+			//showTimeController.getAllShowTimesForMovie("Jaws");
+			//System.out.println(showTimeController.getShowTime("Jaws", LocalDateTime.parse("2022-12-03T10:15:30"), "ORCHASCRN1").getMovie().toString());
 
-			showTimeController.getAllShowTimesForMovie("Jaws");
-
-			System.out.println(showTimeController.getShowTime("Jaws", LocalDateTime.parse("2022-12-03T10:15:30"), "ORCHASCRN1").getMovie().toString());
-
-
-			try {
-				userController.addStaff("admin", "admin");
-				userController.addMovieGoer("watcher", "password", "Tan CL", 91234567, "a@b.com", 22, new ArrayList<Booking>());
-			} catch (ExistingUserException e) {
-				System.out.println(e.getMessage());
-			}
-
+			userController.addStaff("admin", "admin");
+			userController.addMovieGoer("watcher", "password", "Tan CL", 91234567, "a@b.com", 22, new ArrayList<Booking>());
 			System.out.println(userController.read().get(0));
 
 			ticketPriceController.initialisePricesList();
@@ -113,6 +104,7 @@ class MainApp {
 				case 1 -> MovieGoerMenu();
 				case 2 -> StaffMenu();
 				case 3 -> {
+					// --- Insert deletion functions below to remove saved information on app exit ---
 					//showTimeController.deleteShowtime("Jaws", LocalDateTime.parse("2022-12-03T10:15:30"), "ORCHASCRN1");
 					//showTimeController.deleteShowtime("Jaws 2", LocalDateTime.parse("2022-12-03T19:15:30"), "ORCHASCRN1");
 
@@ -177,24 +169,24 @@ class MainApp {
 					Enter your selection:\040""");
 				switch (ScannerController.getInputInt()) {
 					case 1:
-						ListMovieApp lma = new ListMovieApp();
-						lma.main(currentUser);
+						ListMovieApp listMovieApp = new ListMovieApp();
+						listMovieApp.main(currentUser);
 						break;
 					case 2:
-						CheckSeatsApp csa = new CheckSeatsApp();
-						csa.main();
+						CheckSeatsApp checkSeatsApp = new CheckSeatsApp();
+						checkSeatsApp.main();
 						break;
 					case 3:
-						BookSeatsApp bsa = new BookSeatsApp();
-						bsa.main(currentUser);
+						BookSeatsApp bookSeatsApp = new BookSeatsApp();
+						bookSeatsApp.main(currentUser);
 						break;
 					case 4:
-						ListBookingApp lba = new ListBookingApp();
-						lba.main(currentUser);
+						ListBookingApp listBookingApp = new ListBookingApp();
+						listBookingApp.main(currentUser);
 						break;
 					case 5:
-						ListTopMoviesApp ltma = new ListTopMoviesApp();
-						ltma.main();
+						ListTopMoviesApp listTopMoviesApp = new ListTopMoviesApp();
+						listTopMoviesApp.main();
 						break;
 					case 6:
 						isRunning = false;
@@ -251,16 +243,16 @@ class MainApp {
 						Enter your selection:\040""");
 				switch (ScannerController.getInputInt()) {
 					case 1:
-						EditMovieApp ema = new EditMovieApp();
-						ema.main();
+						EditMovieApp editMovieApp = new EditMovieApp();
+						editMovieApp.main();
 						break;
 					case 2:
-						EditShowtimeApp esa = new EditShowtimeApp();
-						esa.main();
+						EditShowtimeApp editShowtimeApp = new EditShowtimeApp();
+						editShowtimeApp.main();
 						break;
 					case 3:
-						SystemSettingsApp ssa = new SystemSettingsApp();
-						ssa.main();
+						SystemSettingsApp systemSettingsApp = new SystemSettingsApp();
+						systemSettingsApp.main();
 						break;
 					case 4:
 						isRunning = false;
